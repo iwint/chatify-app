@@ -14,6 +14,7 @@ module.exports = {
           "@navigation": "./src/navigation",
           "@screens": "./src/screens",
           "@utils": "./src/utils",
+          "@layouts":"./src/layouts"
         }
       },
     ],
