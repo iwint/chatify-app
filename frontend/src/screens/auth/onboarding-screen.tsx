@@ -19,7 +19,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({}) => {
     const navigation = useNavigation();
     const { bottom } = useSafeAreaInsets();
     const handleNavigation = useCallback(() => {
-        navigation.dispatch(StackActions.replace('OTP'));
+        navigation.dispatch(StackActions.replace('Login'));
     }, [navigation, StackActions]);
 
     return (

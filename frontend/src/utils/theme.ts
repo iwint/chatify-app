@@ -2,6 +2,7 @@ import { DarkTheme, DefaultTheme, Theme as NavigationThemeProps } from "@react-n
 import { Dimensions } from "react-native";
 
 
+
 export interface ThemeProps {
     getResponsive: (value: number, deviceDimension: 'width' | 'height') => number;
     dimension: {
@@ -19,6 +20,7 @@ export interface ThemeProps {
         red: string;
         yellow: string;
         text: string;
+        white: string
     }
 }
 
@@ -26,9 +28,9 @@ const LightModeTheme = {
     ...DefaultTheme,
     colors: {
         ...DefaultTheme.colors,
-        primary: '#31C48D',
+        primary: '#1063FD',
         muted: '#3A5A92',
-        background: '#EFEEF6',
+        background: '#DCDCE2',
         gray: '#6E6E73',
         lightGray: '#DCDCE2',
         green: '#4FEE57',
@@ -36,6 +38,7 @@ const LightModeTheme = {
         red: '#EF0827',
         yellow: '#FCC70B',
         text: '#000000',
+        white: "#fff"
     },
 };
 
@@ -47,7 +50,7 @@ const DarkModeTheme = {
         muted: '#3A5A92',
         background: '#121212',
         gray: '#6E6E73',
-        lightGray: '#DCDCE2',
+        lightGray: '#F0F0F0',
         green: '#4FEE57',
         lightGreen: '#DBFFCB',
         red: '#EF0827',

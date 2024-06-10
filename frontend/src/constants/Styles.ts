@@ -3,7 +3,6 @@ import Colors from "./colors";
 
 export const defaultStyles = StyleSheet.create({
     block: {
-        backgroundColor: '#fff',
         borderRadius: 10,
         marginHorizontal: 14,
         marginTop: 20,
@@ -11,6 +10,7 @@ export const defaultStyles = StyleSheet.create({
     item: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
         padding: 10,
         gap: 10,
     },
@@ -19,4 +19,9 @@ export const defaultStyles = StyleSheet.create({
         backgroundColor: Colors.lightGray,
         marginLeft: 50,
     },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10
+    }
 });

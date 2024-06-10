@@ -1,4 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import Login from '@screens/auth/login';
 import OnboardingScreen from '@screens/auth/onboarding-screen';
 import OTP from '@screens/auth/otp-screen';
 
@@ -13,6 +14,7 @@ const AuthStack = () => {
                 name="OnboardingScreen"
                 component={OnboardingScreen}
             />
+            <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="OTP" component={OTP} />
         </Stack.Navigator>
     );

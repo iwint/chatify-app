@@ -2,13 +2,13 @@ import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React from 'react';
 import {
-    Pressable as RNButton,
-    PressableProps as RNButtonProps,
+    TouchableOpacityProps as RNButtonProps,
     StyleProp,
     StyleSheet,
     Text,
     ViewStyle
 } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type ButtonSize = 'small' | 'medium' | 'large' | 'full';
 
@@ -35,31 +35,36 @@ const Button: React.FC<ButtonProps> = ({
                 return {
                     paddingVertical: 10,
                     paddingHorizontal: 20,
+                    fontSize: 14,
                     width: undefined
                 };
             case 'medium':
                 return {
                     paddingVertical: 15,
                     paddingHorizontal: 25,
-                    width: undefined
+                    width: undefined,
+                    fontSize: 16
                 };
             case 'large':
                 return {
                     paddingVertical: 20,
                     paddingHorizontal: 30,
-                    width: undefined
+                    width: undefined,
+                    fontSize: 16
                 };
             case 'full':
                 return {
                     paddingVertical: 18,
                     paddingHorizontal: 30,
-                    width: '100%'
+                    width: '100%',
+                    fontSize: 16
                 };
             default:
                 return {
                     paddingVertical: 15,
                     paddingHorizontal: 25,
-                    width: undefined
+                    width: undefined,
+                    fontSize: 16
                 };
         }
     };
@@ -74,12 +79,29 @@ const Button: React.FC<ButtonProps> = ({
     };
 
     return (
-        <RNButton
+        <TouchableOpacity
             onPress={props.onPress}
-            style={[styles.container, getSize(), getColor(), props.style]}
+            disabled={props.disabled}
+            style={[
+                styles.container,
+                getSize(),
+                getColor(),
+                props.style,
+                { opacity: props.disabled ? 0.7 : 1 }
+            ]}
         >
-            <Text style={styles.text}>{title}</Text>
-        </RNButton>
+            <Text
+                style={[
+                    styles.text,
+                    {
+                        fontSize: getSize().fontSize,
+                        color: getColor().color
+                    }
+                ]}
+            >
+                {title}
+            </Text>
+        </TouchableOpacity>
     );
 };
 
@@ -91,8 +113,6 @@ const makeStyles = (theme: ThemeProps) =>
             borderRadius: 10
         },
         text: {
-            textAlign: 'center',
-            fontSize: theme.getResponsive(18, 'width'),
-            color: theme.colors.text
+            textAlign: 'center'
         }
     });

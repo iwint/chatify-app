@@ -1,7 +1,7 @@
-import { Theme, useTheme } from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
-import React from 'react';
-import { Image, StyleSheet, Text } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface AuthLayoutProps {
@@ -15,10 +15,13 @@ const welcomeImage = Image.resolveAssetSource(
 const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
     const theme = useTheme();
     const styles = makeStyles(theme as unknown as ThemeProps);
+    const [loading, setLoading] = useState(false);
     return (
         <SafeAreaView style={styles.container}>
-            <Image source={{ uri: welcomeImage }} style={styles.welcome} />
-            {children}
+            <>
+                <Image source={{ uri: welcomeImage }} style={styles.welcome} />
+                {children}
+            </>
         </SafeAreaView>
     );
 };
@@ -38,5 +41,12 @@ const makeStyles = (theme: ThemeProps) =>
             width: '100%',
             height: theme.getResponsive(270, 'width'),
             marginBottom: theme.getResponsive(30, 'height')
+        },
+        loading: {
+            ...StyleSheet.absoluteFillObject,
+            zIndex: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: theme.colors.background
         }
     });

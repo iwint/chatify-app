@@ -1,61 +1,158 @@
 import Button from '@components/buttons/button';
-import Select from '@components/inputs/select';
-import AuthLayout from '@layouts/auth-layout';
-import { Theme, useTheme } from '@react-navigation/native';
-import React from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import {
+    ParamListBase,
+    StackActions,
+    useNavigation,
+    useTheme
+} from '@react-navigation/native';
+import {
+    StackNavigationOptions,
+    StackScreenProps
+} from '@react-navigation/stack';
+import { ThemeProps } from '@utils/theme';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import {
+    CodeField,
+    Cursor,
+    useBlurOnFulfill,
+    useClearByFocusCell
+} from 'react-native-confirmation-code-field';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack/types';
 
-interface OTPProps {}
+const CELL_COUNT = 6;
 
-const OTP: React.FC<OTPProps> = ({}) => {
-    const theme = useTheme();
+interface OTPProps extends StackScreenProps<any> {}
+
+const HEADER_OPTIONS: StackNavigationOptions = {
+    headerShown: true,
+    title: 'Verify you phone number',
+    animationEnabled: true,
+    headerShadowVisible: false,
+    headerStatusBarHeight: 10,
+    headerTitleStyle: {
+        fontSize: 18
+    }
+};
+
+const OTP: React.FC<OTPProps> = (props) => {
+    // @ts-ignore
+    const theme: ThemeProps = useTheme();
     const styles = makeStyles(theme);
-    const { bottom } = useSafeAreaInsets();
+    const [code, setCode] = useState('');
+    const { top } = useSafeAreaInsets();
+    const ref = useBlurOnFulfill({ value: code, cellCount: CELL_COUNT });
+    const [codeProps, getCellOnLayoutHandler] = useClearByFocusCell({
+        value: code,
+        setValue: setCode
+    });
+
+    useEffect(() => {
+        props.navigation.setOptions({
+            ...HEADER_OPTIONS,
+            headerStyle: {
+                backgroundColor: theme.colors.background
+            }
+        });
+    }, [props.navigation]);
+
+    useEffect(() => {
+        if (code.length == 6) {
+            props.navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
+        }
+    }, [code]);
+
     return (
-        <AuthLayout>
-            <KeyboardAvoidingView style={{ flex: 1 }}>
-                <View style={styles.container}>
-                    <View>
-                        <Select
-                            onChange={() => {}}
-                            options={[
-                                {
-                                    label: 'Hello',
-                                    value: 'Hii'
-                                }
-                            ]}
-                            value={'Hii'}
-                        />
-                        <TextInput />
+        <View style={[styles.container, { marginTop: top }]}>
+            <Text style={styles.legal}>
+                We have sent you an SMS with a code to the number above.
+            </Text>
+            <Text style={styles.legal}>
+                To complete your phone number verification, please enter the
+                6-digit activation code.
+            </Text>
+
+            <CodeField
+                autoFocus
+                ref={ref}
+                {...props}
+                value={code}
+                onChangeText={setCode}
+                cellCount={CELL_COUNT}
+                rootStyle={styles.codeFieldRoot}
+                keyboardType="number-pad"
+                textContentType="oneTimeCode"
+                renderCell={({ index, symbol, isFocused }) => (
+                    <View
+                        onLayout={getCellOnLayoutHandler(index)}
+                        key={index}
+                        style={[styles.cellRoot, isFocused && styles.focusCell]}
+                    >
+                        <Text style={styles.cellText}>
+                            {symbol || (isFocused ? <Cursor /> : null)}
+                        </Text>
                     </View>
-                    <Text style={styles.description}>
-                        Chatify will need to verify your account. Carrier
-                        charges may apply.
-                    </Text>
-                    <View style={{ flex: 1 }} />
-                    <Button
-                        style={{ marginBottom: bottom }}
-                        size="full"
-                        title="Continue"
-                    />
-                </View>
-            </KeyboardAvoidingView>
-        </AuthLayout>
+                )}
+            />
+
+            <Button
+                size="small"
+                backgroundColor={theme.colors.background}
+                title={`Didn't receive a verification code?`}
+                onPress={() => {}}
+            />
+        </View>
     );
 };
 
 export default OTP;
 
-const makeStyles = (theme: Theme) =>
+const makeStyles = (theme: ThemeProps) =>
     StyleSheet.create({
         container: {
-            gap: 20,
-            height: '100%',
+            flex: 1,
+            alignItems: 'center',
+            padding: 20,
+            backgroundColor: theme.colors.background,
+            gap: 20
+        },
+        legal: {
+            fontSize: 14,
+            textAlign: 'center',
+            color: theme.colors.text
+        },
+        button: {
+            width: '100%',
             alignItems: 'center'
         },
-        description: {
-            color: theme.colors.text
+        buttonText: {
+            color: theme.colors.primary,
+            fontSize: 18
+        },
+        codeFieldRoot: {
+            marginTop: 20,
+            width: 260,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            gap: 4
+        },
+        cellRoot: {
+            width: 40,
+            height: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottomColor: '#ccc',
+            borderBottomWidth: 1
+        },
+        cellText: {
+            color: theme.colors.text,
+            fontSize: 18,
+            textAlign: 'center'
+        },
+        focusCell: {
+            paddingBottom: 4,
+            borderBottomColor: theme.colors.primary,
+            borderBottomWidth: 2
         }
     });
