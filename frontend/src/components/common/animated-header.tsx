@@ -12,22 +12,12 @@ interface AnimatedHeaderProps {
     derivedValues: any;
 }
 
-const HEADER_HEIGHT = 100;
+const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ derivedValues }) => {
     const insets = useSafeAreaInsets();
     //@ts-ignore
     const theme: ThemeProps = useTheme();
-    // const headerHeight = animatedValue.interpolate({
-    //     inputRange: [0, HEADER_HEIGHT + insets.top],
-    //     outputRange: [HEADER_HEIGHT + insets.top, insets.top + 50],
-    //     extrapolate: 'clamp'
-    // });
-
-    // const fontSize = animatedValue.interpolate({
-    //     inputRange: [0, 18 + 5],
-    //     outputRange: [18 + 5, 5 + 5]
-    // });
 
     const animatedHeaderTextSize = useAnimatedStyle(() => ({
         fontSize: withTiming(derivedValues.fontSize.value)
@@ -35,6 +25,13 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ derivedValues }) => {
     const animatedHeaderHeight = useAnimatedStyle(() => ({
         height: withTiming(derivedValues.height.value)
     }));
+    // const animatedHeaderSearchDisplay = useAnimatedStyle(() => ({
+    //     display:
+    //         withTiming(derivedValues.display.value).value === 0
+    //             ? 'none'
+    //             : 'flex',
+    //     height: withTiming(derivedValues.display.value)
+    // }));
 
     return (
         <Animated.View
@@ -63,12 +60,14 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ derivedValues }) => {
             >
                 Settings
             </Animated.Text>
-            <TextInput
-                style={{
-                    display: 'none',
-                    backgroundColor: theme.colors.gray
-                }}
-            />
+            {/* <AnimatedTextInput
+                style={[
+                    {
+                        backgroundColor: theme.colors.gray
+                    },
+                    animatedHeaderSearchDisplay
+                ]}
+            /> */}
         </Animated.View>
     );
 };

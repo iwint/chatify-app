@@ -30,8 +30,9 @@ const Settings: React.FC<SettingsProps> = ({}) => {
     const theme: ThemeProps = useTheme();
     const scrollViewRef = useRef(null);
     const navigation = useNavigation();
-    const headerFontSize = useSharedValue<number>(20);
-    const headerHeight = useSharedValue<number>(200);
+    const headerFontSize = useSharedValue<number>(26);
+    const headerHeight = useSharedValue<number>(100);
+    const headerSearchDisplay = useSharedValue<number>(0);
     const scrollOffset = useSharedValue(0);
     const derivedHeaderFontSize = useDerivedValue(
         () => headerFontSize.value,
@@ -40,6 +41,10 @@ const Settings: React.FC<SettingsProps> = ({}) => {
     const derivedHeaderHeight = useDerivedValue(
         () => headerHeight.value,
         [headerHeight.value]
+    );
+    const derivedHeaderSearchDisplay = useDerivedValue(
+        () => headerSearchDisplay.value,
+        [headerSearchDisplay.value]
     );
 
     const scrollHandler = useAnimatedScrollHandler({
@@ -50,9 +55,10 @@ const Settings: React.FC<SettingsProps> = ({}) => {
             if (scrollY > animatedStartOffset) {
                 headerHeight.value = 70;
                 headerFontSize.value = 18;
+                headerSearchDisplay.value = -1;
             } else {
                 headerFontSize.value = 26;
-
+                headerSearchDisplay.value = 40;
                 headerHeight.value = 100;
             }
         }
@@ -71,7 +77,8 @@ const Settings: React.FC<SettingsProps> = ({}) => {
             <AnimatedHeader
                 derivedValues={{
                     height: derivedHeaderHeight,
-                    fontSize: derivedHeaderFontSize
+                    fontSize: derivedHeaderFontSize,
+                    display: derivedHeaderSearchDisplay
                 }}
             />
             <AnimatedScrollView
