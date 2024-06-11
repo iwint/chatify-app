@@ -19,40 +19,38 @@ const MainStack = () => {
     };
 
     return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <Tab.Navigator
-                screenOptions={{
-                    tabBarAllowFontScaling: true,
-                    headerShadowVisible: false,
-                    tabBarStyle: {
-                        backgroundColor: theme.colors.background,
-                        borderTopWidth: 0,
-                        height: 60,
-                        paddingBottom: 10
-                    },
-                    headerStyle: {
-                        backgroundColor: theme.colors.background
-                    }
-                }}
-            >
-                {TABS.map((tab, index) => (
-                    <Tab.Screen
-                        key={index}
-                        name={tab.name}
-                        component={tab.component}
-                        options={{
-                            tabBarIcon: (props) =>
-                                getTabBarIcon({
-                                    color: props.color,
-                                    focused: props.focused,
-                                    name: tab.icon,
-                                    size: props.size
-                                })
-                        }}
-                    />
-                ))}
-            </Tab.Navigator>
-        </GestureHandlerRootView>
+        <Tab.Navigator
+            screenOptions={{
+                tabBarAllowFontScaling: true,
+                headerShadowVisible: false,
+                tabBarStyle: {
+                    backgroundColor: theme.colors.background,
+                    borderTopWidth: 0,
+                    height: 60,
+                    paddingBottom: 10
+                },
+                headerStyle: {
+                    backgroundColor: theme.colors.background
+                }
+            }}
+        >
+            {TABS.map((tab, index) => (
+                <Tab.Screen
+                    key={index}
+                    name={tab.name}
+                    component={tab.component}
+                    options={{
+                        tabBarIcon: (props) =>
+                            getTabBarIcon({
+                                color: props.color,
+                                focused: props.focused,
+                                name: tab.icon,
+                                size: props.size
+                            })
+                    }}
+                />
+            ))}
+        </Tab.Navigator>
     );
 };
 

@@ -1,31 +1,90 @@
 import Button from '@components/buttons/button';
 import SettingCard from '@components/cards/settings-card';
-import RoundedBoxIcon from '@components/common/rounded-box-icon';
+import AnimatedHeader from '@components/common/animated-header';
 import { devices, items, support } from '@constants/settings-data';
 import { defaultStyles } from '@constants/styles';
-import { useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
     FlatList,
     ScrollView,
     StyleSheet,
-    Text,
     useColorScheme,
     View
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Animated, {
+    useAnimatedScrollHandler,
+    useDerivedValue,
+    useSharedValue
+} from 'react-native-reanimated';
+
+import SafeAreaView from 'react-native-safe-area-view';
 
 interface SettingsProps {}
+
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 const Settings: React.FC<SettingsProps> = ({}) => {
     //@ts-ignore
     const theme: ThemeProps = useTheme();
+    const scrollViewRef = useRef(null);
+    const navigation = useNavigation();
+    const headerFontSize = useSharedValue<number>(20);
+    const headerHeight = useSharedValue<number>(200);
+    const scrollOffset = useSharedValue(0);
+    const derivedHeaderFontSize = useDerivedValue(
+        () => headerFontSize.value,
+        [headerFontSize.value]
+    );
+    const derivedHeaderHeight = useDerivedValue(
+        () => headerHeight.value,
+        [headerHeight.value]
+    );
+
+    const scrollHandler = useAnimatedScrollHandler({
+        onScroll: (event) => {
+            const scrollY = event.contentOffset.y;
+            const animatedStartOffset = 20;
+            scrollOffset.value = 26;
+            if (scrollY > animatedStartOffset) {
+                headerHeight.value = 70;
+                headerFontSize.value = 18;
+            } else {
+                headerFontSize.value = 26;
+
+                headerHeight.value = 100;
+            }
+        }
+    });
     const styles = makeStyles(theme);
     const scheme = useColorScheme();
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerShown: false
+        });
+    }, []);
+
     return (
-        <View style={styles.container}>
-            <ScrollView>
+        <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
+            <AnimatedHeader
+                derivedValues={{
+                    height: derivedHeaderHeight,
+                    fontSize: derivedHeaderFontSize
+                }}
+            />
+            <AnimatedScrollView
+                ref={scrollViewRef}
+                style={{ flex: 1 }}
+                contentContainerStyle={{
+                    paddingTop: 100,
+                    paddingHorizontal: 10
+                }}
+                showsHorizontalScrollIndicator={false}
+                scrollEventThrottle={16}
+                onScroll={scrollHandler}
+            >
                 <View style={{ height: theme.dimension.height }}>
                     <View
                         style={[
@@ -104,8 +163,8 @@ const Settings: React.FC<SettingsProps> = ({}) => {
                         style={{ paddingVertical: 15 }}
                     />
                 </View>
-            </ScrollView>
-        </View>
+            </AnimatedScrollView>
+        </SafeAreaView>
     );
 };
 
