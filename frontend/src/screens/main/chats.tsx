@@ -1,3 +1,4 @@
+import MainLayout from '@layouts/main-layout';
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React from 'react';
@@ -11,9 +12,9 @@ const Chats: React.FC<ChatsProps> = ({}) => {
     const theme: ThemeProps = useTheme();
     const styles = makeStyles(theme);
     return (
-        <SafeAreaView style={styles.container}>
-            <Text>Chats</Text>
-        </SafeAreaView>
+        <MainLayout>
+            <Text></Text>
+        </MainLayout>
     );
 };
 

@@ -3,6 +3,7 @@ import SettingCard from '@components/cards/settings-card';
 import AnimatedHeader from '@components/common/animated-header';
 import { devices, items, support } from '@constants/settings-data';
 import { defaultStyles } from '@constants/styles';
+import MainLayout from '@layouts/main-layout';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React, { useEffect, useRef } from 'react';
@@ -28,42 +29,7 @@ const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 const Settings: React.FC<SettingsProps> = ({}) => {
     //@ts-ignore
     const theme: ThemeProps = useTheme();
-    const scrollViewRef = useRef(null);
     const navigation = useNavigation();
-    const headerFontSize = useSharedValue<number>(26);
-    const headerHeight = useSharedValue<number>(100);
-    const headerSearchDisplay = useSharedValue<number>(0);
-    const scrollOffset = useSharedValue(0);
-    const derivedHeaderFontSize = useDerivedValue(
-        () => headerFontSize.value,
-        [headerFontSize.value]
-    );
-    const derivedHeaderHeight = useDerivedValue(
-        () => headerHeight.value,
-        [headerHeight.value]
-    );
-    const derivedHeaderSearchDisplay = useDerivedValue(
-        () => headerSearchDisplay.value,
-        [headerSearchDisplay.value]
-    );
-
-    const scrollHandler = useAnimatedScrollHandler({
-        onScroll: (event) => {
-            const scrollY = event.contentOffset.y;
-            const animatedStartOffset = 20;
-            scrollOffset.value = 26;
-            if (scrollY > animatedStartOffset) {
-                headerHeight.value = 70;
-                headerFontSize.value = 18;
-                headerSearchDisplay.value = -1;
-            } else {
-                headerFontSize.value = 26;
-                headerSearchDisplay.value = 40;
-                headerHeight.value = 100;
-            }
-        }
-    });
-    const styles = makeStyles(theme);
     const scheme = useColorScheme();
 
     useEffect(() => {
@@ -73,105 +39,83 @@ const Settings: React.FC<SettingsProps> = ({}) => {
     }, []);
 
     return (
-        <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
-            <AnimatedHeader
-                derivedValues={{
-                    height: derivedHeaderHeight,
-                    fontSize: derivedHeaderFontSize,
-                    display: derivedHeaderSearchDisplay
-                }}
-            />
-            <AnimatedScrollView
-                ref={scrollViewRef}
-                style={{ flex: 1 }}
-                contentContainerStyle={{
-                    paddingTop: 100,
-                    paddingHorizontal: 10
-                }}
-                showsHorizontalScrollIndicator={false}
-                scrollEventThrottle={16}
-                onScroll={scrollHandler}
+        <MainLayout>
+            <View
+                style={[
+                    defaultStyles.block,
+                    {
+                        backgroundColor:
+                            scheme === 'dark'
+                                ? theme.colors.gray
+                                : theme.colors.white
+                    }
+                ]}
             >
-                <View style={{ height: theme.dimension.height }}>
-                    <View
-                        style={[
-                            defaultStyles.block,
-                            {
-                                backgroundColor:
-                                    scheme === 'dark'
-                                        ? theme.colors.gray
-                                        : theme.colors.white
-                            }
-                        ]}
-                    >
-                        <FlatList
-                            scrollEnabled={false}
-                            data={devices}
-                            ItemSeparatorComponent={() => (
-                                <View style={defaultStyles.separator} />
-                            )}
-                            renderItem={({ item }) => (
-                                <SettingCard item={item} onPress={() => {}} />
-                            )}
-                        />
-                    </View>
+                <FlatList
+                    scrollEnabled={false}
+                    data={devices}
+                    ItemSeparatorComponent={() => (
+                        <View style={defaultStyles.separator} />
+                    )}
+                    renderItem={({ item }) => (
+                        <SettingCard item={item} onPress={() => {}} />
+                    )}
+                />
+            </View>
+            <View
+                style={[
+                    defaultStyles.block,
+                    {
+                        backgroundColor:
+                            scheme === 'dark'
+                                ? theme.colors.gray
+                                : theme.colors.white
+                    }
+                ]}
+            >
+                <FlatList
+                    scrollEnabled={false}
+                    data={items}
+                    ItemSeparatorComponent={() => (
+                        <View style={defaultStyles.separator} />
+                    )}
+                    renderItem={({ item }) => (
+                        <SettingCard item={item} onPress={() => {}} />
+                    )}
+                />
+            </View>
 
-                    <View
-                        style={[
-                            defaultStyles.block,
-                            {
-                                backgroundColor:
-                                    scheme === 'dark'
-                                        ? theme.colors.gray
-                                        : theme.colors.white
-                            }
-                        ]}
-                    >
-                        <FlatList
-                            scrollEnabled={false}
-                            data={items}
-                            ItemSeparatorComponent={() => (
-                                <View style={defaultStyles.separator} />
-                            )}
-                            renderItem={({ item }) => (
-                                <SettingCard item={item} onPress={() => {}} />
-                            )}
-                        />
-                    </View>
+            <View
+                style={[
+                    defaultStyles.block,
+                    {
+                        backgroundColor:
+                            scheme === 'dark'
+                                ? theme.colors.gray
+                                : theme.colors.white
+                    }
+                ]}
+            >
+                <FlatList
+                    scrollEnabled={false}
+                    data={support}
+                    ItemSeparatorComponent={() => (
+                        <View style={defaultStyles.separator} />
+                    )}
+                    renderItem={({ item }) => (
+                        <SettingCard item={item} onPress={() => {}} />
+                    )}
+                />
+            </View>
 
-                    <View
-                        style={[
-                            defaultStyles.block,
-                            {
-                                backgroundColor:
-                                    scheme === 'dark'
-                                        ? theme.colors.gray
-                                        : theme.colors.white
-                            }
-                        ]}
-                    >
-                        <FlatList
-                            scrollEnabled={false}
-                            data={support}
-                            ItemSeparatorComponent={() => (
-                                <View style={defaultStyles.separator} />
-                            )}
-                            renderItem={({ item }) => (
-                                <SettingCard item={item} onPress={() => {}} />
-                            )}
-                        />
-                    </View>
-
-                    <Button
-                        size="large"
-                        title="Log Out"
-                        backgroundColor={theme.colors.background}
-                        textColor={theme.colors.primary}
-                        style={{ paddingVertical: 15 }}
-                    />
-                </View>
-            </AnimatedScrollView>
-        </SafeAreaView>
+            <Button
+                size="large"
+                title="Log Out"
+                backgroundColor={theme.colors.background}
+                textColor={theme.colors.primary}
+                style={{ paddingVertical: 15 }}
+            />
+        </MainLayout>
     );
 };
 

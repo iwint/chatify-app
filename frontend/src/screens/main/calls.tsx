@@ -1,8 +1,8 @@
+import MainLayout from '@layouts/main-layout';
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface CallsProps {}
 
@@ -11,9 +11,9 @@ const Calls: React.FC<CallsProps> = ({}) => {
     const theme: ThemeProps = useTheme();
     const styles = makeStyles(theme);
     return (
-        <SafeAreaView style={styles.container}>
+        <MainLayout>
             <Text>Calls</Text>
-        </SafeAreaView>
+        </MainLayout>
     );
 };
 
