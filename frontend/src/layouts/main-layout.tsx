@@ -16,8 +16,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import SafeAreaView from 'react-native-safe-area-view';
 
-interface HeaderOptions {
-    headerTitle?: string;
+export interface HeaderOptions {
+    headerTitle?: string | React.ReactNode;
     headerLeft?: React.ReactNode;
     headerRight?: React.ReactNode;
 }
@@ -96,11 +96,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, headerOptions }) => {
     return (
         <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
             <AnimatedHeader
-                headerTitle={
-                    headerOptions?.headerTitle
-                        ? headerOptions.headerTitle
-                        : route.name
-                }
+                headerTitle={headerOptions?.headerTitle}
                 headerLeft={headerOptions?.headerLeft}
                 headerRight={headerOptions?.headerRight}
                 derivedValues={{
@@ -114,10 +110,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, headerOptions }) => {
                 contentInsetAdjustmentBehavior={'automatic'}
                 ref={scrollViewRef}
                 style={{ flex: 1 }}
-                contentContainerStyle={{
-                    paddingTop: 10,
-                    paddingHorizontal: 10
-                }}
+                contentContainerStyle={styles.contentContainer}
                 showsHorizontalScrollIndicator={false}
                 scrollEventThrottle={16}
                 onScroll={scrollHandler}
@@ -138,5 +131,10 @@ const makeStyles = (theme: ThemeProps) =>
             flex: 1,
             backgroundColor: theme.colors.background,
             height: '100%'
+        },
+        contentContainer: {
+            paddingVertical: 10,
+            paddingBottom: 15,
+            paddingHorizontal: 10
         }
     });

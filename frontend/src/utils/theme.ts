@@ -1,5 +1,7 @@
-import { DarkTheme, DefaultTheme, Theme as NavigationThemeProps } from "@react-navigation/native";
+import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 import { Dimensions } from "react-native";
+
+
 
 
 
@@ -20,7 +22,13 @@ export interface ThemeProps {
         red: string;
         yellow: string;
         text: string;
-        white: string
+        white: string;
+        black: string;
+        palette: {
+            baseGray05: string,
+            baseGray80: string,
+            background: string,
+        }
     }
 }
 
@@ -30,7 +38,7 @@ const LightModeTheme = {
         ...DefaultTheme.colors,
         primary: '#1063FD',
         muted: '#3A5A92',
-        background: '#DCDCE2',
+        background: '#EFEEF6',
         gray: '#6E6E73',
         lightGray: '#DCDCE2',
         green: '#4FEE57',
@@ -38,7 +46,14 @@ const LightModeTheme = {
         red: '#EF0827',
         yellow: '#FCC70B',
         text: '#000000',
-        white: "#fff"
+        white: "#fff",
+        black: '#000',
+        palette: {
+            baseGray05: '#E5E2DC',
+            baseGray80: '#30302E',
+            background: '#F1EEE8',
+        }
+
     },
 };
 
@@ -46,7 +61,7 @@ const DarkModeTheme = {
     ...DarkTheme,
     colors: {
         ...DefaultTheme.colors,
-        primary: '#31C48D',
+        primary: '#1063FD',
         muted: '#3A5A92',
         background: '#121212',
         gray: '#6E6E73',
@@ -56,6 +71,13 @@ const DarkModeTheme = {
         red: '#EF0827',
         yellow: '#FCC70B',
         text: '#FFFFFF',
+        white: '#fff',
+        black: "#000",
+        palette: {
+            baseGray05: '#E5E2DC',
+            baseGray80: '#30302E',
+            background: '#F1EEE8',
+        }
     },
 };
 

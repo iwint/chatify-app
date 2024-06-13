@@ -1,6 +1,6 @@
-import { useTheme } from '@react-navigation/native';
+import { useRoute, useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, useColorScheme } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Animated, {
     useAnimatedStyle,
@@ -10,7 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 interface AnimatedHeaderProps {
     derivedValues: any;
-    headerTitle: string;
+    headerTitle?: React.ReactNode | string;
     headerLeft?: React.ReactNode;
     headerRight?: React.ReactNode;
 }
@@ -24,6 +24,9 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
     //@ts-ignore
     const theme: ThemeProps = useTheme();
     const styles = makeStyles(theme);
+    const route = useRoute();
+    const scheme = useColorScheme();
+    //temp
 
     const animatedHeaderTextSize = useAnimatedStyle(() => {
         return {
@@ -48,24 +51,34 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
 
     return (
         <Animated.View style={[styles.container, animatedHeaderHeight]}>
-            <Animated.View
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: '100%',
-                    justifyContent: 'space-between'
-                }}
-            >
+            <Animated.View style={styles.topSectionWrapper}>
                 <Animated.View>{headerLeft}</Animated.View>
-                <Animated.Text
-                    style={[
-                        styles.text,
-                        animatedHeaderTextSize,
-                        animatedSmallTitle
-                    ]}
-                >
-                    {headerTitle}
-                </Animated.Text>
+                {headerTitle ? (
+                    typeof headerTitle === 'string' ? (
+                        <Animated.Text
+                            style={[
+                                styles.text,
+                                animatedHeaderTextSize,
+                                animatedSmallTitle
+                            ]}
+                        >
+                            {headerTitle}
+                        </Animated.Text>
+                    ) : (
+                        headerTitle
+                    )
+                ) : (
+                    <Animated.Text
+                        style={[
+                            styles.text,
+                            animatedHeaderTextSize,
+                            animatedSmallTitle
+                        ]}
+                    >
+                        {route.name}
+                    </Animated.Text>
+                )}
+
                 <Animated.View>{headerRight}</Animated.View>
             </Animated.View>
 
@@ -76,19 +89,36 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
                     animatedLargeHeaderTitle
                 ]}
             >
-                {headerTitle}
+                {route.name}
             </Animated.Text>
             <Animated.View
-                style={[styles.textInputWrapper, animatedHeaderSearchDisplay]}
+                style={[
+                    styles.textInputWrapper,
+                    animatedHeaderSearchDisplay,
+                    {
+                        backgroundColor:
+                            scheme === 'dark'
+                                ? theme.colors.gray
+                                : theme.colors.lightGray
+                    }
+                ]}
             >
                 <Icon
                     name="search-outline"
                     size={18}
-                    color={theme.colors.text}
+                    color={
+                        scheme === 'dark'
+                            ? theme.colors.lightGray
+                            : theme.colors.gray
+                    }
                 />
                 <TextInput
                     placeholder="Search"
-                    placeholderTextColor={theme.colors.lightGray}
+                    placeholderTextColor={
+                        scheme === 'dark'
+                            ? theme.colors.lightGray
+                            : theme.colors.gray
+                    }
                     clearButtonMode={'always'}
                     activeCursor={'cell'}
                     cursorColor={theme.colors.primary}
@@ -113,7 +143,6 @@ const makeStyles = (theme: ThemeProps) =>
             gap: 10
         },
         textInputWrapper: {
-            backgroundColor: theme.colors.gray,
             width: '100%',
             borderRadius: 10,
             height: 40,
@@ -125,6 +154,12 @@ const makeStyles = (theme: ThemeProps) =>
         text: {
             color: theme.colors.text,
             fontFamily: 'bold'
+        },
+        topSectionWrapper: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            justifyContent: 'space-between'
         }
     });
 

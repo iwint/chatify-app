@@ -1,8 +1,16 @@
-import MainLayout from '@layouts/main-layout';
+import { CALLS_DATA } from '@assets/data/calls';
+import SegementedControl from '@components/common/segmented-control';
+import ListBlock from '@components/sections/list-block';
+import { defaultStyles } from '@constants/styles';
+import MainLayout, { HeaderOptions } from '@layouts/main-layout';
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
-import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { format } from 'date-fns';
+import React, { useState } from 'react';
+import { Image, useColorScheme } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 interface CallsProps {}
 
@@ -10,9 +18,120 @@ const Calls: React.FC<CallsProps> = ({}) => {
     //@ts-ignore
     const theme: ThemeProps = useTheme();
     const styles = makeStyles(theme);
+    const [isEditing, setIsEditing] = useState(false);
+    const scheme = useColorScheme();
+    const [selectedOption, setSelectedOption] = useState('Hello');
+
+    const toggleIsEditing = () => {
+        setIsEditing((p) => !p);
+    };
+
+    const headerOptions: HeaderOptions = {
+        headerLeft: (
+            <TouchableOpacity onPress={toggleIsEditing}>
+                <Text style={styles.headerLeftButton}>
+                    {isEditing ? 'Done' : 'Edit'}
+                </Text>
+            </TouchableOpacity>
+        ),
+        headerTitle: (
+            <SegementedControl
+                options={['All', 'Missed']}
+                selectedOption={selectedOption}
+                onPressOption={setSelectedOption}
+            />
+        ),
+        headerRight: (
+            <TouchableOpacity>
+                <Icon
+                    name="call-outline"
+                    size={theme.getResponsive(24, 'width')}
+                    color={theme.colors.primary}
+                />
+            </TouchableOpacity>
+        )
+    };
+
     return (
-        <MainLayout>
-            <Text>Calls</Text>
+        <MainLayout headerOptions={headerOptions}>
+            <ListBlock
+                data={CALLS_DATA}
+                renderComponent={(item) => (
+                    <View style={[defaultStyles.item]}>
+                        <Image
+                            source={{ uri: item.img }}
+                            style={styles.avatar}
+                        />
+                        <View style={{ flex: 1, gap: 2 }}>
+                            <Text
+                                style={{
+                                    fontSize: theme.getResponsive(16, 'width'),
+                                    color: item.missed
+                                        ? theme.colors.red
+                                        : theme.colors.text
+                                }}
+                            >
+                                {item.name}
+                            </Text>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    gap: 4,
+                                    alignItems: 'center'
+                                }}
+                            >
+                                <Icon
+                                    color={
+                                        scheme === 'dark'
+                                            ? theme.colors.text
+                                            : theme.colors.gray
+                                    }
+                                    name={item.video ? 'videocam' : 'call'}
+                                />
+                                <Text
+                                    style={{
+                                        color:
+                                            scheme === 'dark'
+                                                ? theme.colors.text
+                                                : theme.colors.gray,
+                                        fontSize: theme.getResponsive(
+                                            12,
+                                            'height'
+                                        ),
+                                        flex: 1
+                                    }}
+                                >
+                                    {item.incoming ? 'Incoming' : 'Outgoing'}
+                                </Text>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                gap: 6,
+                                alignItems: 'center'
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    color:
+                                        scheme === 'dark'
+                                            ? theme.colors.text
+                                            : theme.colors.gray,
+                                    fontSize: theme.getResponsive(12, 'height')
+                                }}
+                            >
+                                {format(item.date, 'MM.dd.yy')}
+                            </Text>
+                            <Icon
+                                name="information-circle-outline"
+                                size={24}
+                                color={theme.colors.primary}
+                            />
+                        </View>
+                    </View>
+                )}
+            />
         </MainLayout>
     );
 };
@@ -26,5 +145,14 @@ const makeStyles = (theme: ThemeProps) =>
             padding: 20,
             justifyContent: 'center',
             alignItems: 'center'
+        },
+        headerLeftButton: {
+            color: theme.colors.primary,
+            fontSize: theme.getResponsive(18, 'width')
+        },
+        avatar: {
+            width: theme.getResponsive(40, 'width'),
+            height: theme.getResponsive(40, 'height'),
+            borderRadius: 40
         }
     });

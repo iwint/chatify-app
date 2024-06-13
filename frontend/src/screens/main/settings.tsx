@@ -1,30 +1,15 @@
 import Button from '@components/buttons/button';
 import SettingCard from '@components/cards/settings-card';
-import AnimatedHeader from '@components/common/animated-header';
+import ListBlock from '@components/sections/list-block';
 import { devices, items, support } from '@constants/settings-data';
 import { defaultStyles } from '@constants/styles';
 import MainLayout from '@layouts/main-layout';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
-import React, { useEffect, useRef } from 'react';
-import {
-    FlatList,
-    ScrollView,
-    StyleSheet,
-    useColorScheme,
-    View
-} from 'react-native';
-import Animated, {
-    useAnimatedScrollHandler,
-    useDerivedValue,
-    useSharedValue
-} from 'react-native-reanimated';
-
-import SafeAreaView from 'react-native-safe-area-view';
+import React, { useEffect } from 'react';
+import { FlatList, StyleSheet, useColorScheme, View } from 'react-native';
 
 interface SettingsProps {}
-
-const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 const Settings: React.FC<SettingsProps> = ({}) => {
     //@ts-ignore
@@ -40,73 +25,24 @@ const Settings: React.FC<SettingsProps> = ({}) => {
 
     return (
         <MainLayout>
-            <View
-                style={[
-                    defaultStyles.block,
-                    {
-                        backgroundColor:
-                            scheme === 'dark'
-                                ? theme.colors.gray
-                                : theme.colors.white
-                    }
-                ]}
-            >
-                <FlatList
-                    scrollEnabled={false}
-                    data={devices}
-                    ItemSeparatorComponent={() => (
-                        <View style={defaultStyles.separator} />
-                    )}
-                    renderItem={({ item }) => (
-                        <SettingCard item={item} onPress={() => {}} />
-                    )}
-                />
-            </View>
-            <View
-                style={[
-                    defaultStyles.block,
-                    {
-                        backgroundColor:
-                            scheme === 'dark'
-                                ? theme.colors.gray
-                                : theme.colors.white
-                    }
-                ]}
-            >
-                <FlatList
-                    scrollEnabled={false}
-                    data={items}
-                    ItemSeparatorComponent={() => (
-                        <View style={defaultStyles.separator} />
-                    )}
-                    renderItem={({ item }) => (
-                        <SettingCard item={item} onPress={() => {}} />
-                    )}
-                />
-            </View>
-
-            <View
-                style={[
-                    defaultStyles.block,
-                    {
-                        backgroundColor:
-                            scheme === 'dark'
-                                ? theme.colors.gray
-                                : theme.colors.white
-                    }
-                ]}
-            >
-                <FlatList
-                    scrollEnabled={false}
-                    data={support}
-                    ItemSeparatorComponent={() => (
-                        <View style={defaultStyles.separator} />
-                    )}
-                    renderItem={({ item }) => (
-                        <SettingCard item={item} onPress={() => {}} />
-                    )}
-                />
-            </View>
+            <ListBlock
+                data={devices}
+                renderComponent={(item) => (
+                    <SettingCard item={item} onPress={() => {}} />
+                )}
+            />
+            <ListBlock
+                data={items}
+                renderComponent={(item) => (
+                    <SettingCard item={item} onPress={() => {}} />
+                )}
+            />
+            <ListBlock
+                data={support}
+                renderComponent={(item) => (
+                    <SettingCard item={item} onPress={() => {}} />
+                )}
+            />
 
             <Button
                 size="large"
