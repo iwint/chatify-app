@@ -1,14 +1,8 @@
 import AnimatedHeader from '@components/common/animated-header';
-import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React, { useEffect, useRef } from 'react';
-import {
-    ScrollView,
-    StyleSheet,
-    Text,
-    useColorScheme,
-    View
-} from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import Animated, {
     useAnimatedScrollHandler,
     useDerivedValue,
@@ -43,7 +37,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, headerOptions }) => {
         () => headerFontSize.value,
         [headerFontSize.value]
     );
-    const route = useRoute();
 
     const derivedHeaderTextAlign = useDerivedValue(
         () => headerTextAlign.value,
@@ -56,11 +49,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, headerOptions }) => {
     const derivedHeaderSearchDisplay = useDerivedValue(
         () => headerSearchDisplay.value,
         [headerSearchDisplay.value]
-    );
-
-    const derivedScrollOffset = useDerivedValue(
-        () => scrollOffset.value,
-        [scrollOffset.value]
     );
 
     const scrollHandler = useAnimatedScrollHandler({
@@ -87,7 +75,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, headerOptions }) => {
         }
     });
     const styles = makeStyles(theme);
-    const scheme = useColorScheme();
     useEffect(() => {
         navigation.setOptions({
             headerShown: false

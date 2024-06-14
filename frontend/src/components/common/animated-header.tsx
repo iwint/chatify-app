@@ -49,6 +49,13 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
         display: derivedValues.display.value
     }));
 
+    const animatedHeaderTitleComponent = useAnimatedStyle(() => {
+        return {
+            display:
+                derivedValues.textAlign.value === 'center' ? 'none' : 'flex'
+        };
+    });
+
     return (
         <Animated.View style={[styles.container, animatedHeaderHeight]}>
             <Animated.View style={styles.topSectionWrapper}>
@@ -65,7 +72,20 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
                             {headerTitle}
                         </Animated.Text>
                     ) : (
-                        headerTitle
+                        <>
+                            <Animated.View style={animatedHeaderTitleComponent}>
+                                {headerTitle}
+                            </Animated.View>
+                            <Animated.Text
+                                style={[
+                                    styles.text,
+                                    animatedHeaderTextSize,
+                                    animatedSmallTitle
+                                ]}
+                            >
+                                {route.name}
+                            </Animated.Text>
+                        </>
                     )
                 ) : (
                     <Animated.Text

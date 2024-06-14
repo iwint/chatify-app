@@ -1,15 +1,17 @@
 import { CALLS_DATA } from '@assets/data/calls';
 import SegementedControl from '@components/common/segmented-control';
+import Swipeable from '@components/common/swipable';
 import ListBlock from '@components/sections/list-block';
 import { defaultStyles } from '@constants/styles';
 import MainLayout, { HeaderOptions } from '@layouts/main-layout';
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import { format } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, useColorScheme } from 'react-native';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Animated, { FadeInUp, FadeOutDown } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 interface CallsProps {}
@@ -20,8 +22,8 @@ const Calls: React.FC<CallsProps> = ({}) => {
     const styles = makeStyles(theme);
     const [isEditing, setIsEditing] = useState(false);
     const scheme = useColorScheme();
-    const [selectedOption, setSelectedOption] = useState('Hello');
-
+    const [selectedOption, setSelectedOption] = useState('All');
+    const [filteredData, setFilteredData] = useState<Array<any>>(CALLS_DATA);
     const toggleIsEditing = () => {
         setIsEditing((p) => !p);
     };
@@ -52,84 +54,109 @@ const Calls: React.FC<CallsProps> = ({}) => {
         )
     };
 
+    useEffect(() => {
+        if (selectedOption === 'Missed') {
+            setFilteredData(CALLS_DATA.filter((call) => call.missed === true));
+        } else {
+            setFilteredData(CALLS_DATA);
+        }
+    }, [selectedOption]);
+
     return (
         <MainLayout headerOptions={headerOptions}>
             <ListBlock
-                data={CALLS_DATA}
-                renderComponent={(item) => (
-                    <View style={[defaultStyles.item]}>
-                        <Image
-                            source={{ uri: item.img }}
-                            style={styles.avatar}
-                        />
-                        <View style={{ flex: 1, gap: 2 }}>
-                            <Text
-                                style={{
-                                    fontSize: theme.getResponsive(16, 'width'),
-                                    color: item.missed
-                                        ? theme.colors.red
-                                        : theme.colors.text
-                                }}
-                            >
-                                {item.name}
-                            </Text>
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    gap: 4,
-                                    alignItems: 'center'
-                                }}
-                            >
-                                <Icon
-                                    color={
-                                        scheme === 'dark'
-                                            ? theme.colors.text
-                                            : theme.colors.gray
-                                    }
-                                    name={item.video ? 'videocam' : 'call'}
+                data={filteredData}
+                renderComponent={(item, index) => (
+                    <Swipeable>
+                        <Animated.View
+                            entering={FadeInUp.delay(index * 10)}
+                            exiting={FadeOutDown}
+                        >
+                            <View style={[defaultStyles.item]}>
+                                <Image
+                                    source={{ uri: item.img }}
+                                    style={styles.avatar}
                                 />
-                                <Text
+                                <View style={{ flex: 1, gap: 2 }}>
+                                    <Text
+                                        style={{
+                                            fontSize: theme.getResponsive(
+                                                16,
+                                                'width'
+                                            ),
+                                            color: item.missed
+                                                ? theme.colors.red
+                                                : theme.colors.text
+                                        }}
+                                    >
+                                        {item.name}
+                                    </Text>
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            gap: 4,
+                                            alignItems: 'center'
+                                        }}
+                                    >
+                                        <Icon
+                                            color={
+                                                scheme === 'dark'
+                                                    ? theme.colors.text
+                                                    : theme.colors.gray
+                                            }
+                                            name={
+                                                item.video ? 'videocam' : 'call'
+                                            }
+                                        />
+                                        <Text
+                                            style={{
+                                                color:
+                                                    scheme === 'dark'
+                                                        ? theme.colors.text
+                                                        : theme.colors.gray,
+                                                fontSize: theme.getResponsive(
+                                                    12,
+                                                    'height'
+                                                ),
+                                                flex: 1
+                                            }}
+                                        >
+                                            {item.incoming
+                                                ? 'Incoming'
+                                                : 'Outgoing'}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View
                                     style={{
-                                        color:
-                                            scheme === 'dark'
-                                                ? theme.colors.text
-                                                : theme.colors.gray,
-                                        fontSize: theme.getResponsive(
-                                            12,
-                                            'height'
-                                        ),
-                                        flex: 1
+                                        flexDirection: 'row',
+                                        gap: 6,
+                                        alignItems: 'center'
                                     }}
                                 >
-                                    {item.incoming ? 'Incoming' : 'Outgoing'}
-                                </Text>
+                                    <Text
+                                        style={{
+                                            color:
+                                                scheme === 'dark'
+                                                    ? theme.colors.text
+                                                    : theme.colors.gray,
+                                            fontSize: theme.getResponsive(
+                                                12,
+                                                'height'
+                                            )
+                                        }}
+                                    >
+                                        {format(item.date, 'MM.dd.yy')}
+                                    </Text>
+                                    <Icon
+                                        name="information-circle-outline"
+                                        size={24}
+                                        color={theme.colors.primary}
+                                    />
+                                </View>
                             </View>
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                gap: 6,
-                                alignItems: 'center'
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    color:
-                                        scheme === 'dark'
-                                            ? theme.colors.text
-                                            : theme.colors.gray,
-                                    fontSize: theme.getResponsive(12, 'height')
-                                }}
-                            >
-                                {format(item.date, 'MM.dd.yy')}
-                            </Text>
-                            <Icon
-                                name="information-circle-outline"
-                                size={24}
-                                color={theme.colors.primary}
-                            />
-                        </View>
-                    </View>
+                        </Animated.View>
+                    </Swipeable>
                 )}
             />
         </MainLayout>
