@@ -62,12 +62,22 @@ const Calls: React.FC<CallsProps> = ({}) => {
         }
     }, [selectedOption]);
 
+    const handleDeleteCall = (item: any) => {
+        console.log(item);
+
+        let calls = [...filteredData];
+        calls = calls.filter((i) => i.id != item.id);
+        console.log(JSON.stringify(calls, null, 2));
+
+        setFilteredData(calls);
+    };
+
     return (
         <MainLayout headerOptions={headerOptions}>
             <ListBlock
                 data={filteredData}
                 renderComponent={(item, index) => (
-                    <Swipeable>
+                    <Swipeable onDelete={() => handleDeleteCall(item)}>
                         <Animated.View
                             entering={FadeInUp.delay(index * 10)}
                             exiting={FadeOutDown}
