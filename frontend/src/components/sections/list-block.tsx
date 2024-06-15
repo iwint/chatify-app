@@ -34,6 +34,7 @@ const ListBlock: React.FC<ListBlockProps> = ({ data, renderComponent }) => {
                 skipEnteringExitingAnimations
                 itemLayoutAnimation={transition}
                 scrollEnabled={false}
+                snapToEnd
                 data={data}
                 ItemSeparatorComponent={() => (
                     <View style={defaultStyles.separator} />

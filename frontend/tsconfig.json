@@ -13,7 +13,8 @@
             "@services/*": ["services/*"],
             "@hooks/*": ["hooks/*"],
             "@types/*": ["types/*"],
-            "@layouts/*": ["layouts/*"]
+            "@layouts/*": ["layouts/*"],
+            "@models/*": ["models/*"]
         }
     }
 }

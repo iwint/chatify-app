@@ -1,14 +1,15 @@
+import CALLS_DATA from '@assets/data/calls.json';
 import CallsCard from '@components/cards/calls-card';
 import SegementedControl from '@components/common/segmented-control';
 import ListBlock from '@components/sections/list-block';
 import MainLayout, { HeaderOptions } from '@layouts/main-layout';
+import { Call } from '@models/calls';
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSharedValue } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
-import CALLS_DATA from '@assets/data/calls.json';
 
 interface CallsProps {}
 
@@ -18,19 +19,15 @@ const Calls: React.FC<CallsProps> = ({}) => {
     const styles = makeStyles(theme);
     const [isEditing, setIsEditing] = useState(false);
     const [selectedOption, setSelectedOption] = useState('All');
-    const [filteredData, setFilteredData] = useState<Array<any>>(CALLS_DATA);
+    const [filteredData, setFilteredData] = useState<Array<Call>>(CALLS_DATA);
 
     const editing = useSharedValue(-32);
 
     const toggleIsEditing = () => {
-        editing.value = isEditing ? 0 : -32;
+        let isEdit = isEditing === true;
+        editing.value = isEdit ? 0 : -32;
         setIsEditing(!isEditing);
     };
-
-    const derivedEditingValues = useDerivedValue(
-        () => editing.value,
-        [editing.value, isEditing]
-    );
 
     const headerOptions: HeaderOptions = {
         headerLeft: (
@@ -66,13 +63,9 @@ const Calls: React.FC<CallsProps> = ({}) => {
         }
     }, [selectedOption]);
 
-    const handleDeleteCall = (item: any) => {
-        console.log(item);
-
+    const handleDeleteCall = (item: Call) => {
         let calls = [...filteredData];
         calls = calls.filter((i) => i.id != item.id);
-        console.log(JSON.stringify(calls, null, 2));
-
         setFilteredData(calls);
     };
 
@@ -80,12 +73,12 @@ const Calls: React.FC<CallsProps> = ({}) => {
         <MainLayout headerOptions={headerOptions}>
             <ListBlock
                 data={filteredData}
-                renderComponent={(item, index) => (
+                renderComponent={(item: Call, index) => (
                     <CallsCard
                         isEditing={isEditing}
                         data={item}
                         index={index}
-                        editingValue={derivedEditingValues.value}
+                        editingValue={editing.value}
                         onDelete={handleDeleteCall}
                     />
                 )}

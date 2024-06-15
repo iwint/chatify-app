@@ -1,5 +1,6 @@
 import Swipeable from '@components/common/swipable';
 import { defaultStyles } from '@constants/styles';
+import { Call } from '@models/calls';
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import { format } from 'date-fns';
@@ -21,8 +22,8 @@ import Animated, {
 import Icon from 'react-native-vector-icons/Ionicons';
 
 interface CallsCardProps {
-    onDelete: (item: any) => void;
-    data: any;
+    onDelete: (item: Call) => void;
+    data: Call;
     index: number;
     editingValue: number;
     isEditing: boolean;
@@ -42,12 +43,9 @@ const CallsCard: React.FC<CallsCardProps> = ({
     const theme: ThemeProps = useTheme();
     const styles = makeStyles(theme);
     const scheme = useColorScheme();
-    const animatedRowStyle = useAnimatedStyle(
-        () => ({
-            transform: [{ translateX: withTiming(editingValue) }]
-        }),
-        [editingValue, isEditing]
-    );
+    const animatedRowStyle = useAnimatedStyle(() => ({
+        transform: [{ translateX: withTiming(editingValue) }]
+    }));
     return (
         <Swipeable onDelete={() => onDelete(data)}>
             <Animated.View

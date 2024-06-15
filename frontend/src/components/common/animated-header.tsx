@@ -1,3 +1,4 @@
+import { HeaderOptions } from '@layouts/main-layout';
 import { useRoute, useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import { StyleSheet, useColorScheme } from 'react-native';
@@ -8,18 +9,16 @@ import Animated, {
 } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-interface AnimatedHeaderProps {
+interface AnimatedHeaderProps extends HeaderOptions {
     derivedValues: any;
-    headerTitle?: React.ReactNode | string;
-    headerLeft?: React.ReactNode;
-    headerRight?: React.ReactNode;
 }
 
 const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
     derivedValues,
     headerTitle,
     headerLeft,
-    headerRight
+    headerRight,
+    headerStyle
 }) => {
     //@ts-ignore
     const theme: ThemeProps = useTheme();
@@ -57,7 +56,18 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
     });
 
     return (
-        <Animated.View style={[styles.container, animatedHeaderHeight]}>
+        <Animated.View
+            style={[
+                styles.container,
+                animatedHeaderHeight,
+                {
+                    backgroundColor: headerStyle?.backgroundColor
+                        ? headerStyle.backgroundColor
+                        : theme.colors.background,
+                    ...headerStyle
+                }
+            ]}
+        >
             <Animated.View style={styles.topSectionWrapper}>
                 <Animated.View>{headerLeft}</Animated.View>
                 {headerTitle ? (
@@ -157,7 +167,6 @@ const makeStyles = (theme: ThemeProps) =>
             left: 0,
             right: 0,
             zIndex: 10,
-            backgroundColor: theme.colors.background,
             justifyContent: 'center',
             padding: 20,
             gap: 10

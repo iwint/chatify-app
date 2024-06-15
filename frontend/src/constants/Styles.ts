@@ -5,7 +5,6 @@ export const defaultStyles = StyleSheet.create({
     block: {
         borderRadius: 10,
         marginHorizontal: 14,
-        marginTop: 20,
     },
     item: {
         flexDirection: 'row',

@@ -2,7 +2,7 @@ import AnimatedHeader from '@components/common/animated-header';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React, { useEffect, useRef } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, {
     useAnimatedScrollHandler,
     useDerivedValue,
@@ -14,6 +14,7 @@ export interface HeaderOptions {
     headerTitle?: string | React.ReactNode;
     headerLeft?: React.ReactNode;
     headerRight?: React.ReactNode;
+    headerStyle?: ViewStyle;
 }
 
 interface MainLayoutProps {
@@ -86,6 +87,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, headerOptions }) => {
                 headerTitle={headerOptions?.headerTitle}
                 headerLeft={headerOptions?.headerLeft}
                 headerRight={headerOptions?.headerRight}
+                headerStyle={headerOptions?.headerStyle}
                 derivedValues={{
                     height: derivedHeaderHeight,
                     fontSize: derivedHeaderFontSize,
@@ -102,7 +104,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, headerOptions }) => {
                 scrollEventThrottle={16}
                 onScroll={scrollHandler}
             >
-                <View style={{ height: theme.dimension.height }}>
+                <View style={{ minHeight: theme.dimension.height, gap: 20 }}>
                     {children}
                 </View>
             </AnimatedScrollView>
@@ -120,8 +122,8 @@ const makeStyles = (theme: ThemeProps) =>
             height: '100%'
         },
         contentContainer: {
-            paddingVertical: 10,
+            paddingTop: 40,
             paddingBottom: 15,
-            paddingHorizontal: 10
+            paddingHorizontal: 5
         }
     });
