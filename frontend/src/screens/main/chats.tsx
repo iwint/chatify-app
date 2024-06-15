@@ -1,9 +1,9 @@
-import MainLayout from '@layouts/main-layout';
+import MainLayout, { HeaderOptions } from '@layouts/main-layout';
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 interface ChatsProps {}
 
@@ -11,8 +11,39 @@ const Chats: React.FC<ChatsProps> = ({}) => {
     //@ts-ignore
     const theme: ThemeProps = useTheme();
     const styles = makeStyles(theme);
+
+    const headerOptions: HeaderOptions = {
+        headerLeft: (
+            <TouchableOpacity>
+                <Icon
+                    name="ellipsis-horizontal-circle"
+                    size={theme.getResponsive(30, 'width')}
+                    color={theme.colors.primary}
+                />
+            </TouchableOpacity>
+        ),
+
+        headerRight: (
+            <View style={styles.headerRightWrapper}>
+                <TouchableOpacity>
+                    <Icon
+                        name="camera-outline"
+                        size={theme.getResponsive(30, 'width')}
+                        color={theme.colors.primary}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <Icon
+                        name="add-circle"
+                        size={theme.getResponsive(30, 'width')}
+                        color={theme.colors.primary}
+                    />
+                </TouchableOpacity>
+            </View>
+        )
+    };
     return (
-        <MainLayout>
+        <MainLayout headerOptions={headerOptions}>
             <Text></Text>
         </MainLayout>
     );
@@ -27,5 +58,14 @@ const makeStyles = (theme: ThemeProps) =>
             padding: 20,
             justifyContent: 'center',
             alignItems: 'center'
+        },
+        headerLeftButton: {
+            color: theme.colors.primary,
+            fontSize: theme.getResponsive(18, 'width')
+        },
+        headerRightWrapper: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: theme.getResponsive(30, 'width')
         }
     });

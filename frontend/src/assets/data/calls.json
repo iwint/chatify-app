@@ -1,4 +1,4 @@
-export const CALLS_DATA = [
+[
     {
         "id": "3f8aab84-d949-4e85-a103-479b3f799d6c",
         "name": "Odessa",
