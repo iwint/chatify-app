@@ -1,5 +1,5 @@
+import ChatStack from "@navigation/main/chats-stack";
 import Calls from "@screens/main/calls";
-import Chats from "@screens/main/chats";
 import Communities from "@screens/main/communities";
 import Settings from "@screens/main/settings";
 import UpdatesScreen from "@screens/main/updates";
@@ -21,9 +21,9 @@ export const TABS = [
         component: Communities
     },
     {
-        name: 'Chats',
+        name: 'ChatStack',
         icon: 'chat',
-        component: Chats
+        component: ChatStack
     },
     {
         name: 'Settings',

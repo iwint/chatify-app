@@ -1,4 +1,6 @@
-import Swipeable from '@components/common/swipable';
+import Swipeable, {
+    SwipeableRightActionProps
+} from '@components/common/swipable';
 import { defaultStyles } from '@constants/styles';
 import { Call } from '@models/calls';
 import { useTheme } from '@react-navigation/native';
@@ -46,8 +48,14 @@ const CallsCard: React.FC<CallsCardProps> = ({
     const animatedRowStyle = useAnimatedStyle(() => ({
         transform: [{ translateX: withTiming(editingValue) }]
     }));
+    const swipeableAction: SwipeableRightActionProps = {
+        color: '#dd2c00',
+        onPressAction: () => onDelete(data),
+        title: 'Delete',
+        width: 200
+    };
     return (
-        <Swipeable onDelete={() => onDelete(data)}>
+        <Swipeable actions={[swipeableAction]}>
             <Animated.View
                 entering={FadeInUp.delay(index * 10)}
                 exiting={FadeOutDown}
@@ -76,13 +84,7 @@ const CallsCard: React.FC<CallsCardProps> = ({
                         >
                             {data.name}
                         </Text>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                gap: 4,
-                                alignItems: 'center'
-                            }}
-                        >
+                        <View style={{ ...styles.bottomSection, gap: 4 }}>
                             <Icon
                                 color={
                                     scheme === 'dark'
@@ -107,9 +109,8 @@ const CallsCard: React.FC<CallsCardProps> = ({
                     </View>
                     <View
                         style={{
-                            flexDirection: 'row',
                             gap: 6,
-                            alignItems: 'center'
+                            ...styles.bottomSection
                         }}
                     >
                         <Text
@@ -148,5 +149,9 @@ const makeStyles = (theme: ThemeProps) =>
             width: theme.getResponsive(40, 'width'),
             height: theme.getResponsive(40, 'height'),
             borderRadius: 40
+        },
+        bottomSection: {
+            flexDirection: 'row',
+            alignItems: 'center'
         }
     });

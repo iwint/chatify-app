@@ -76,11 +76,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, headerOptions }) => {
         }
     });
     const styles = makeStyles(theme);
-    useEffect(() => {
-        navigation.setOptions({
-            headerShown: false
-        });
-    }, []);
+
     return (
         <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
             <AnimatedHeader

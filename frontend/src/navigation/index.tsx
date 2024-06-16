@@ -5,8 +5,9 @@ import { StatusBar, useColorScheme } from 'react-native';
 import AuthStack from './auth/auth-stack';
 import MainStack from './main/main-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
     const scheme = useColorScheme();
@@ -21,8 +22,7 @@ const AppNavigator = () => {
                 />
                 <Stack.Navigator
                     screenOptions={{
-                        headerShown: false,
-                        animationEnabled: true
+                        headerShown: false
                     }}
                 >
                     <Stack.Screen name="Main" component={MainStack} />

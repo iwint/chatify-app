@@ -1,4 +1,6 @@
-import Swipeable from '@components/common/swipable';
+import Swipeable, {
+    SwipeableRightActionProps
+} from '@components/common/swipable';
 import { Chat } from '@models/chats';
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
@@ -28,8 +30,26 @@ const ChatsCard: React.FC<ChatsCardProps> = ({
     const theme: ThemeProps = useTheme();
     const styles = makeStyles(theme);
     const scheme = useColorScheme();
+
+    const swipeableActions: Array<SwipeableRightActionProps> = [
+        {
+            color: '#C8C7CD',
+            onPressAction: () => {},
+            title: 'More',
+            width: 100,
+            icon: 'ellipsis-horizontal-outline'
+        },
+        {
+            color: theme.colors.muted,
+            onPressAction: () => {},
+            title: 'Archive',
+            width: 100,
+            icon: 'archive'
+        }
+    ];
+
     return (
-        <Swipeable onDelete={() => {}}>
+        <Swipeable actions={swipeableActions}>
             <TouchableHighlight
                 key={id}
                 style={styles.container}

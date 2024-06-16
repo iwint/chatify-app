@@ -23,6 +23,7 @@ const MainStack = () => {
             screenOptions={{
                 tabBarAllowFontScaling: true,
                 headerShadowVisible: false,
+                headerShown: false,
                 tabBarStyle: {
                     backgroundColor: theme.colors.background,
                     borderTopWidth: 0,
@@ -40,6 +41,7 @@ const MainStack = () => {
                     name={tab.name}
                     component={tab.component}
                     options={{
+                        title: tab.name === 'ChatStack' ? 'Chats' : undefined,
                         tabBarIcon: (props) =>
                             getTabBarIcon({
                                 color: props.color,

@@ -1,14 +1,23 @@
-import React, { Component, PropsWithChildren } from 'react';
-import { Animated, StyleSheet, Text, View, I18nManager } from 'react-native';
+import React, { Component } from 'react';
+import { Animated, I18nManager, StyleSheet, Text, View } from 'react-native';
 
 import {
-    RectButton,
-    Swipeable as GestureSwipeable
+    Swipeable as GestureSwipeable,
+    RectButton
 } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+export interface SwipeableRightActionProps {
+    title: string;
+    color: string;
+    width: number;
+    icon?: string;
+    onPressAction: () => void;
+}
 
 interface SwipeableProps {
     children: React.ReactNode;
-    onDelete: () => void;
+    actions: Array<SwipeableRightActionProps>;
 }
 
 export default class Swipeable extends Component<SwipeableProps> {
@@ -16,14 +25,16 @@ export default class Swipeable extends Component<SwipeableProps> {
         text: string,
         color: string,
         x: number,
-        progress: Animated.AnimatedInterpolation<number>
+        progress: Animated.AnimatedInterpolation<number>,
+        onPressAction: () => void,
+        icon?: string
     ) => {
         const trans = progress.interpolate({
             inputRange: [0, 1],
             outputRange: [x, 0]
         });
         const pressHandler = () => {
-            this.props.onDelete();
+            onPressAction();
         };
 
         return (
@@ -34,6 +45,14 @@ export default class Swipeable extends Component<SwipeableProps> {
                     style={[styles.rightAction, { backgroundColor: color }]}
                     onPress={pressHandler}
                 >
+                    {icon != '' && icon && (
+                        <Icon
+                            color={'white'}
+                            name={icon}
+                            size={24}
+                            style={{ paddingTop: 10 }}
+                        />
+                    )}
                     <Text style={styles.actionText}>{text}</Text>
                 </RectButton>
             </Animated.View>
@@ -50,7 +69,17 @@ export default class Swipeable extends Component<SwipeableProps> {
                 flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row'
             }}
         >
-            {this.renderRightAction('Delete', '#dd2c00', 200, progress)}
+            {this.props.actions.map((action) =>
+                // this.renderRightAction('Delete', '#dd2c00', 200, progress)
+                this.renderRightAction(
+                    action.title,
+                    action.color,
+                    action.width,
+                    progress,
+                    action.onPressAction,
+                    action.icon
+                )
+            )}
         </View>
     );
 
@@ -87,7 +116,7 @@ const styles = StyleSheet.create({
     },
     actionText: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 14,
         backgroundColor: 'transparent',
         padding: 10
     },
