@@ -29,7 +29,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
 
     const animatedHeaderTextSize = useAnimatedStyle(() => {
         return {
-            fontSize: withTiming(derivedValues.fontSize.value)
+            fontSize: withTiming(derivedValues?.fontSize.value || 14)
         };
     });
     const animatedHeaderHeight = useAnimatedStyle(() => ({

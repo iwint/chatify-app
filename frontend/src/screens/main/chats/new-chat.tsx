@@ -1,7 +1,7 @@
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface NewChatProps {}
@@ -12,7 +12,7 @@ const NewChat: React.FC<NewChatProps> = ({}) => {
     const styles = makeStyles(theme);
     return (
         <SafeAreaView style={styles.container}>
-            <Text>NewChat</Text>
+            <View></View>
         </SafeAreaView>
     );
 };
@@ -22,8 +22,10 @@ export default NewChat;
 const makeStyles = (theme: ThemeProps) =>
     StyleSheet.create({
         container: {
-            flex: 1,
-            padding: 20,
+            height: '95%',
+            borderTopStartRadius: 10,
+            borderTopEndRadius: 10,
+            backgroundColor: theme.colors.white,
             justifyContent: 'center',
             alignItems: 'center'
         }

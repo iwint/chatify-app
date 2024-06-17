@@ -1,14 +1,18 @@
 import CHATS_DATA from '@assets/data/chats.json';
 import ChatsCard from '@components/cards/chats-card';
+import BottomModal from '@components/modals/bottom-sheet-modal';
 import ListBlock from '@components/sections/list-block';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import MainLayout, { HeaderOptions } from '@layouts/main-layout';
 import { Chat } from '@models/chats';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ThemeProps } from '@utils/theme';
-import React from 'react';
+import React, { useRef } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
+import NewChat from './new-chat';
 
 interface ChatsProps {}
 
@@ -17,8 +21,11 @@ const Chats: React.FC<ChatsProps> = ({}) => {
     const theme: ThemeProps = useTheme();
     const styles = makeStyles(theme);
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
-    const navigateToNewChat = () => {
-        navigation.navigate('NewChat');
+    const bottomModalRef = useRef<BottomSheetModal>(null);
+
+    const handleNewChatModal = () => {
+        bottomModalRef.current?.snapToIndex(3);
+        bottomModalRef.current?.present();
     };
     const headerOptions: HeaderOptions = {
         headerLeft: (
@@ -39,7 +46,7 @@ const Chats: React.FC<ChatsProps> = ({}) => {
                         color={theme.colors.primary}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={navigateToNewChat}>
+                <TouchableOpacity onPress={handleNewChatModal}>
                     <Icon
                         name="add-circle"
                         size={theme.getResponsive(30, 'width')}
@@ -51,6 +58,9 @@ const Chats: React.FC<ChatsProps> = ({}) => {
     };
     return (
         <MainLayout headerOptions={headerOptions}>
+            <BottomModal initialIndex={2} ref={bottomModalRef} title="Hello">
+                <NewChat />
+            </BottomModal>
             <ListBlock
                 data={CHATS_DATA}
                 renderComponent={(item: Chat) => <ChatsCard {...item} />}

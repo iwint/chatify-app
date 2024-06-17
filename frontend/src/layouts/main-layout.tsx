@@ -9,6 +9,7 @@ import Animated, {
     useSharedValue
 } from 'react-native-reanimated';
 import SafeAreaView from 'react-native-safe-area-view';
+import { ScreenContainerProps } from 'react-native-screens';
 
 export interface HeaderOptions {
     headerTitle?: string | React.ReactNode;
@@ -20,15 +21,21 @@ export interface HeaderOptions {
 interface MainLayoutProps {
     children: React.ReactNode;
     headerOptions?: HeaderOptions;
+    layoutOptions?: {
+        backgroundColor: string;
+    };
 }
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children, headerOptions }) => {
+const MainLayout: React.FC<MainLayoutProps> = ({
+    children,
+    headerOptions,
+    layoutOptions
+}) => {
     //@ts-ignore
     const theme: ThemeProps = useTheme();
     const scrollViewRef = useRef(null);
-    const navigation = useNavigation();
     const headerFontSize = useSharedValue<number>(26);
     const headerHeight = useSharedValue<number>(100);
     const headerSearchDisplay = useSharedValue<string>('none');
@@ -78,7 +85,17 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, headerOptions }) => {
     const styles = makeStyles(theme);
 
     return (
-        <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
+        <SafeAreaView
+            forceInset={{ top: 'always' }}
+            style={[
+                styles.container,
+                {
+                    backgroundColor: layoutOptions?.backgroundColor
+                        ? layoutOptions.backgroundColor
+                        : theme.colors.background
+                }
+            ]}
+        >
             <AnimatedHeader
                 headerTitle={headerOptions?.headerTitle}
                 headerLeft={headerOptions?.headerLeft}
@@ -114,7 +131,6 @@ const makeStyles = (theme: ThemeProps) =>
     StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: theme.colors.background,
             height: '100%'
         },
         contentContainer: {

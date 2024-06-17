@@ -1,11 +1,10 @@
 import { NavigationContainer, useTheme } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { getTheme } from '@utils/theme';
 import { StatusBar, useColorScheme } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AuthStack from './auth/auth-stack';
 import MainStack from './main/main-stack';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,8 +12,8 @@ const AppNavigator = () => {
     const scheme = useColorScheme();
     const theme = useTheme();
     return (
-        <SafeAreaProvider style={{ flex: 1 }}>
-            <NavigationContainer theme={getTheme(scheme === 'dark')}>
+        <NavigationContainer theme={getTheme(scheme === 'dark')}>
+            <SafeAreaProvider style={{ flex: 1 }}>
                 <StatusBar
                     backgroundColor={
                         getTheme(scheme === 'dark').colors.background
@@ -28,8 +27,8 @@ const AppNavigator = () => {
                     <Stack.Screen name="Main" component={MainStack} />
                     <Stack.Screen name="Auth" component={AuthStack} />
                 </Stack.Navigator>
-            </NavigationContainer>
-        </SafeAreaProvider>
+            </SafeAreaProvider>
+        </NavigationContainer>
     );
 };
 
