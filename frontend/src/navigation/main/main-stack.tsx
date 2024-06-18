@@ -1,4 +1,5 @@
 import { TABS } from '@constants/tabs-data';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -19,40 +20,43 @@ const MainStack = () => {
     };
 
     return (
-        <Tab.Navigator
-            screenOptions={{
-                tabBarAllowFontScaling: true,
-                headerShadowVisible: false,
-                headerShown: false,
-                tabBarStyle: {
-                    backgroundColor: theme.colors.background,
-                    borderTopWidth: 0,
-                    height: 60,
-                    paddingBottom: 10
-                },
-                headerStyle: {
-                    backgroundColor: theme.colors.background
-                }
-            }}
-        >
-            {TABS.map((tab, index) => (
-                <Tab.Screen
-                    key={index}
-                    name={tab.name}
-                    component={tab.component}
-                    options={{
-                        title: tab.name === 'ChatStack' ? 'Chats' : undefined,
-                        tabBarIcon: (props) =>
-                            getTabBarIcon({
-                                color: props.color,
-                                focused: props.focused,
-                                name: tab.icon,
-                                size: props.size
-                            })
-                    }}
-                />
-            ))}
-        </Tab.Navigator>
+        <BottomSheetModalProvider>
+            <Tab.Navigator
+                screenOptions={{
+                    tabBarAllowFontScaling: true,
+                    headerShadowVisible: false,
+                    headerShown: false,
+                    tabBarStyle: {
+                        backgroundColor: theme.colors.background,
+                        borderTopWidth: 0,
+                        height: 60,
+                        paddingBottom: 10
+                    },
+                    headerStyle: {
+                        backgroundColor: theme.colors.background
+                    }
+                }}
+            >
+                {TABS.map((tab, index) => (
+                    <Tab.Screen
+                        key={index}
+                        name={tab.name}
+                        component={tab.component}
+                        options={{
+                            title:
+                                tab.name === 'ChatStack' ? 'Chats' : undefined,
+                            tabBarIcon: (props) =>
+                                getTabBarIcon({
+                                    color: props.color,
+                                    focused: props.focused,
+                                    name: tab.icon,
+                                    size: props.size
+                                })
+                        }}
+                    />
+                ))}
+            </Tab.Navigator>
+        </BottomSheetModalProvider>
     );
 };
 

@@ -1,3 +1,4 @@
+import SearchInput from '@components/inputs/search';
 import { HeaderOptions } from '@layouts/main-layout';
 import { useRoute, useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
@@ -24,8 +25,6 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
     const theme: ThemeProps = useTheme();
     const styles = makeStyles(theme);
     const route = useRoute();
-    const scheme = useColorScheme();
-    //temp
 
     const animatedHeaderTextSize = useAnimatedStyle(() => {
         return {
@@ -121,41 +120,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
             >
                 {route.name}
             </Animated.Text>
-            <Animated.View
-                style={[
-                    styles.textInputWrapper,
-                    animatedHeaderSearchDisplay,
-                    {
-                        backgroundColor:
-                            scheme === 'dark'
-                                ? theme.colors.gray
-                                : theme.colors.lightGray
-                    }
-                ]}
-            >
-                <Icon
-                    name="search-outline"
-                    size={18}
-                    color={
-                        scheme === 'dark'
-                            ? theme.colors.lightGray
-                            : theme.colors.gray
-                    }
-                />
-                <TextInput
-                    placeholder="Search"
-                    placeholderTextColor={
-                        scheme === 'dark'
-                            ? theme.colors.lightGray
-                            : theme.colors.gray
-                    }
-                    clearButtonMode={'always'}
-                    activeCursor={'cell'}
-                    cursorColor={theme.colors.primary}
-                    inputMode={'search'}
-                    style={[{ width: '100%', color: theme.colors.text }]}
-                />
-            </Animated.View>
+            <SearchInput style={animatedHeaderSearchDisplay} />
         </Animated.View>
     );
 };
@@ -171,15 +136,7 @@ const makeStyles = (theme: ThemeProps) =>
             padding: 20,
             gap: 10
         },
-        textInputWrapper: {
-            width: '100%',
-            borderRadius: 10,
-            height: 40,
-            paddingLeft: 10,
-            flexDirection: 'row',
-            gap: 10,
-            alignItems: 'center'
-        },
+
         text: {
             color: theme.colors.text,
             fontFamily: 'bold'

@@ -7,6 +7,7 @@ import { Dimensions } from "react-native";
 
 export interface ThemeProps {
     getResponsive: (value: number, deviceDimension: 'width' | 'height') => number;
+    dark: boolean;
     dimension: {
         width: number;
         height: number;
@@ -34,6 +35,7 @@ export interface ThemeProps {
 
 const LightModeTheme = {
     ...DefaultTheme,
+    dark: DefaultTheme.dark,
     colors: {
         ...DefaultTheme.colors,
         primary: '#1063FD',
@@ -59,6 +61,7 @@ const LightModeTheme = {
 
 const DarkModeTheme = {
     ...DarkTheme,
+    dark: DarkTheme.dark,
     colors: {
         ...DefaultTheme.colors,
         primary: '#1063FD',

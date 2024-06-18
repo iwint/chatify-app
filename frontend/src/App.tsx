@@ -11,11 +11,9 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 function App(): React.JSX.Element {
     return (
         <GestureHandlerRootView>
-            <BottomSheetModalProvider>
-                <EventProvider>
-                    <AppNavigator />
-                </EventProvider>
-            </BottomSheetModalProvider>
+            <EventProvider>
+                <AppNavigator />
+            </EventProvider>
         </GestureHandlerRootView>
     );
 }
