@@ -80,6 +80,6 @@ Please make sure your code follows our coding guidelines and includes tests wher
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
-If you have any questions or feedback, please contact us at [iwinissacofficial@gmail.com](mailto: iwinissacofficial@gmail.com).
+If you have any questions or feedback, please contact us at [iwinissacofficial@gmail.com] .
 
 Happy chatting with Chatify!
