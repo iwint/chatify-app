@@ -56,9 +56,7 @@ const ChatsCard: React.FC<ChatsCardProps> = ({
                 onPress={() => {}}
                 activeOpacity={0.6}
                 underlayColor={
-                    scheme === 'dark'
-                        ? theme.colors.gray
-                        : theme.colors.lightGray
+                    theme.dark ? theme.colors.gray : theme.colors.lightGray
                 }
             >
                 <View style={styles.content}>
@@ -68,10 +66,9 @@ const ChatsCard: React.FC<ChatsCardProps> = ({
                         <Text
                             style={{
                                 fontSize: 14,
-                                color:
-                                    scheme === 'dark'
-                                        ? theme.colors.lightGray
-                                        : theme.colors.gray
+                                color: theme.dark
+                                    ? theme.colors.lightGray
+                                    : theme.colors.gray
                             }}
                             numberOfLines={1}
                         >
@@ -82,10 +79,9 @@ const ChatsCard: React.FC<ChatsCardProps> = ({
                         style={[
                             styles.date,
                             {
-                                color:
-                                    scheme === 'dark'
-                                        ? theme.colors.lightGray
-                                        : theme.colors.gray
+                                color: theme.dark
+                                    ? theme.colors.lightGray
+                                    : theme.colors.gray
                             }
                         ]}
                     >

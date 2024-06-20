@@ -44,13 +44,13 @@ const BottomModal = forwardRef<Ref, BottomModalProps>(
         const Header: React.FC<BottomSheetHandleProps> = ({}) => {
             return (
                 <View style={styles.topSectionWrapper}>
-                    <Text style={styles.text}>New chat</Text>
+                    <Text style={styles.text}>{title}</Text>
                     <TouchableOpacity onPress={() => dismiss()}>
                         <Icon
                             style={styles.closeIcon}
                             name="close-outline"
                             size={20}
-                            color={theme.colors.text}
+                            color={theme.colors.white}
                         />
                     </TouchableOpacity>
                 </View>

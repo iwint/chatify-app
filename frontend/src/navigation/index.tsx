@@ -16,6 +16,10 @@ const AppNavigator = () => {
         <NavigationContainer theme={getTheme(scheme === 'dark')}>
             <SafeAreaProvider style={{ flex: 1 }}>
                 <StatusBar
+                    animated
+                    barStyle={
+                        scheme === 'dark' ? 'light-content' : 'dark-content'
+                    }
                     backgroundColor={
                         getTheme(scheme === 'dark').colors.background
                     }

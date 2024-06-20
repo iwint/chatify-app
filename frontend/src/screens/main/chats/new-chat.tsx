@@ -1,15 +1,11 @@
+import contacts from '@assets/data/contacts.json';
 import SearchInput from '@components/inputs/search';
+import { AlphabetList } from '@components/sections/alphabet-list';
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import contacts from '@assets/data/contacts.json';
-import {
-    BottomSheetScrollView,
-    BottomSheetSectionList
-} from '@gorhom/bottom-sheet';
-import { AlphabetList } from '@components/sections/alphabet-list';
 
 interface NewChatProps {}
 

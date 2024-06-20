@@ -58,7 +58,7 @@ const Chats: React.FC<ChatsProps> = ({}) => {
     };
     return (
         <MainLayout headerOptions={headerOptions}>
-            <BottomModal initialIndex={2} ref={bottomModalRef} title="Hello">
+            <BottomModal initialIndex={2} ref={bottomModalRef} title="New Chat">
                 <NewChat />
             </BottomModal>
             <ListBlock

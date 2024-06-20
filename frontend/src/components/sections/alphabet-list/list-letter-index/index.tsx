@@ -82,7 +82,6 @@ const sizes = {
 const makeStyles = (theme: ThemeProps) =>
     StyleSheet.create({
         letterIndexContainer: {
-            width: sizes.containerWidth,
             backgroundColor: theme.colors.background,
             height: '100%',
             position: 'absolute',

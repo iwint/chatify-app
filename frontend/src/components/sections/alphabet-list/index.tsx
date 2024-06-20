@@ -5,7 +5,8 @@ import {
     View,
     Text,
     SectionListData,
-    StyleSheet
+    StyleSheet,
+    Image
 } from 'react-native';
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout';
 import { IData, ISectionData, AlphabetListProps } from './types';
@@ -15,6 +16,7 @@ import { getSectionData } from '@utils/get-section-data';
 import { BottomSheetSectionList } from '@gorhom/bottom-sheet';
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
+import { defaultStyles } from '@constants/styles';
 
 const sizes = {
     itemHeight: 40,
@@ -110,15 +112,41 @@ export const AlphabetList: React.FC<AlphabetListProps> = (props) => {
         );
     };
 
-    const onRenderItem = ({ item }: { item: IData }) => {
+    const onRenderItem = ({ item }: any) => {
         if (renderCustomItem) return renderCustomItem(item);
 
         return (
-            <View testID="cell" style={styles.listItemContainer}>
-                <Text testID="cell__label" style={styles.listItemLabel}>
-                    {item.value}
-                </Text>
-            </View>
+            <>
+                <View testID="cell" style={styles.listItemContainer}>
+                    <Image
+                        source={{ uri: item.img }}
+                        style={{ borderRadius: 50 }}
+                        width={40}
+                        height={40}
+                    />
+                    <View style={{ flex: 1 }}>
+                        <Text testID="cell__label" style={styles.listItemLabel}>
+                            {item.value}
+                        </Text>
+                        <Text
+                            testID="cell__label"
+                            numberOfLines={1}
+                            style={[
+                                styles.listItemLabel,
+                                {
+                                    fontSize: 12,
+                                    color: theme.dark
+                                        ? theme.colors.text
+                                        : theme.colors.gray
+                                }
+                            ]}
+                        >
+                            {item.desc}
+                        </Text>
+                    </View>
+                </View>
+                <View style={defaultStyles.separator} />
+            </>
         );
     };
 
@@ -160,11 +188,10 @@ const makeStyles = (theme: ThemeProps) =>
 
         listItemContainer: {
             flex: 1,
-            height: sizes.itemHeight,
-            paddingHorizontal: sizes.spacing.regular,
-            justifyContent: 'center',
-            borderTopColor: theme.colors.gray,
-            borderTopWidth: 1,
+            flexDirection: 'row',
+            padding: sizes.spacing.regular,
+            alignItems: 'center',
+            gap: 10,
             backgroundColor: theme.dark ? theme.colors.gray : theme.colors.white
         },
 
@@ -181,6 +208,7 @@ const makeStyles = (theme: ThemeProps) =>
         },
 
         sectionHeaderLabel: {
-            color: theme.colors.lightGray
+            color: theme.dark ? theme.colors.lightGray : theme.colors.text,
+            fontWeight: '600'
         }
     });
