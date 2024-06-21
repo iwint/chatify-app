@@ -2,13 +2,11 @@ import SearchInput from '@components/inputs/search';
 import { HeaderOptions } from '@layouts/main-layout';
 import { useRoute, useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
-import { StyleSheet, useColorScheme } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native';
 import Animated, {
     useAnimatedStyle,
     withTiming
 } from 'react-native-reanimated';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 interface AnimatedHeaderProps extends HeaderOptions {
     derivedValues: any;
