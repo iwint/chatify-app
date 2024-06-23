@@ -15,7 +15,9 @@ import {
     View
 } from 'react-native';
 
-interface ChatsCardProps extends Chat {}
+interface ChatsCardProps extends Chat {
+    onPress: () => void;
+}
 
 const ChatsCard: React.FC<ChatsCardProps> = ({
     date,
@@ -24,7 +26,8 @@ const ChatsCard: React.FC<ChatsCardProps> = ({
     img,
     msg,
     read,
-    unreadCount
+    unreadCount,
+    onPress
 }) => {
     //@ts-ignore
     const theme: ThemeProps = useTheme();
@@ -53,7 +56,7 @@ const ChatsCard: React.FC<ChatsCardProps> = ({
             <TouchableHighlight
                 key={id}
                 style={styles.container}
-                onPress={() => {}}
+                onPress={onPress}
                 activeOpacity={0.6}
                 underlayColor={
                     theme.dark ? theme.colors.gray : theme.colors.lightGray

@@ -54,8 +54,17 @@ const Chats: React.FC<ChatsProps> = ({}) => {
                     />
                 </TouchableOpacity>
             </View>
-        )
+        ),
+        searchOptions: {
+            placeholder: 'Search'
+        },
+        headerLargeTitle: true
     };
+
+    const handleOnPress = (data: Chat) => {
+        navigation.navigate('SingleChat', { data });
+    };
+
     return (
         <MainLayout headerOptions={headerOptions}>
             <BottomModal initialIndex={2} ref={bottomModalRef} title="New Chat">
@@ -63,7 +72,9 @@ const Chats: React.FC<ChatsProps> = ({}) => {
             </BottomModal>
             <ListBlock
                 data={CHATS_DATA}
-                renderComponent={(item: Chat) => <ChatsCard {...item} />}
+                renderComponent={(item: Chat) => (
+                    <ChatsCard onPress={() => handleOnPress(item)} {...item} />
+                )}
             />
         </MainLayout>
     );

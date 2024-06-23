@@ -8,26 +8,29 @@ export const TABS = [
     {
         name: 'Updates',
         icon: 'update',
+        material: true,
         component: UpdatesScreen
     },
     {
         name: 'Calls',
         icon: 'call',
+        material: true,
         component: Calls
     },
     {
         name: 'Communities',
         icon: 'groups',
+        material: true,
         component: Communities
     },
     {
         name: 'ChatStack',
-        icon: 'chat',
+        icon: 'chatbubbles',
         component: ChatStack
     },
     {
         name: 'Settings',
-        icon: 'settings',
+        icon: 'cog-outline',
         component: Settings
     }
 ]

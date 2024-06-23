@@ -2,7 +2,13 @@ import AnimatedHeader from '@components/common/animated-header';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React, { useEffect, useRef } from 'react';
-import { ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+    ScrollView,
+    StyleSheet,
+    TextInputProps,
+    View,
+    ViewStyle
+} from 'react-native';
 import Animated, {
     useAnimatedScrollHandler,
     useDerivedValue,
@@ -11,11 +17,15 @@ import Animated, {
 import SafeAreaView from 'react-native-safe-area-view';
 import { ScreenContainerProps } from 'react-native-screens';
 
+export interface SearchOptions extends TextInputProps {}
+
 export interface HeaderOptions {
     headerTitle?: string | React.ReactNode;
     headerLeft?: React.ReactNode;
     headerRight?: React.ReactNode;
     headerStyle?: ViewStyle;
+    searchOptions?: SearchOptions;
+    headerLargeTitle?: boolean;
 }
 
 interface MainLayoutProps {
@@ -101,6 +111,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 headerLeft={headerOptions?.headerLeft}
                 headerRight={headerOptions?.headerRight}
                 headerStyle={headerOptions?.headerStyle}
+                searchOptions={headerOptions?.searchOptions}
+                headerLargeTitle={headerOptions?.headerLargeTitle}
                 derivedValues={{
                     height: derivedHeaderHeight,
                     fontSize: derivedHeaderFontSize,
@@ -112,7 +124,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 contentInsetAdjustmentBehavior={'automatic'}
                 ref={scrollViewRef}
                 style={{ flex: 1 }}
-                contentContainerStyle={styles.contentContainer}
+                contentContainerStyle={[
+                    styles.contentContainer,
+                    { paddingTop: headerOptions?.headerLargeTitle ? 40 : 0 }
+                ]}
                 showsHorizontalScrollIndicator={false}
                 scrollEventThrottle={16}
                 onScroll={scrollHandler}
@@ -134,7 +149,6 @@ const makeStyles = (theme: ThemeProps) =>
             height: '100%'
         },
         contentContainer: {
-            paddingTop: 40,
             paddingBottom: 15,
             paddingHorizontal: 5
         }

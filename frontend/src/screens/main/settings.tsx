@@ -3,7 +3,7 @@ import SettingCard from '@components/cards/settings-card';
 import ListBlock from '@components/sections/list-block';
 import { devices, items, support } from '@constants/settings-data';
 import { defaultStyles } from '@constants/styles';
-import MainLayout from '@layouts/main-layout';
+import MainLayout, { HeaderOptions } from '@layouts/main-layout';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React, { useEffect } from 'react';
@@ -23,8 +23,14 @@ const Settings: React.FC<SettingsProps> = ({}) => {
         });
     }, []);
 
+    const headerOptions: HeaderOptions = {
+        headerLargeTitle: true,
+        headerLeft: <></>,
+        searchOptions: {}
+    };
+
     return (
-        <MainLayout>
+        <MainLayout headerOptions={headerOptions}>
             <ListBlock
                 data={devices}
                 renderComponent={(item) => (

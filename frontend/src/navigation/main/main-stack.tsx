@@ -2,7 +2,8 @@ import { TABS } from '@constants/tabs-data';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,8 +15,21 @@ const MainStack = () => {
         color: string;
         size: number;
         name: string;
+        material?: boolean;
     }) => {
-        return <Icon color={props.color} size={28} name={props.name} />;
+        return (
+            <>
+                {props.material ? (
+                    <MaterialIcon
+                        color={props.color}
+                        size={28}
+                        name={props.name}
+                    />
+                ) : (
+                    <IonIcon color={props.color} size={28} name={props.name} />
+                )}
+            </>
+        );
     };
 
     return (
@@ -49,7 +63,8 @@ const MainStack = () => {
                                     color: props.color,
                                     focused: props.focused,
                                     name: tab.icon,
-                                    size: props.size
+                                    size: props.size,
+                                    material: tab.material
                                 })
                         }}
                     />

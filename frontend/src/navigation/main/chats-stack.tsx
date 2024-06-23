@@ -1,6 +1,7 @@
 import { useTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Chats from '@screens/main/chats/chats';
+import SingleChat from '@screens/main/chats/single-chat';
 
 const Stack = createNativeStackNavigator();
 
@@ -9,6 +10,7 @@ const ChatStack = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Chats" component={Chats} />
+            <Stack.Screen name="SingleChat" component={SingleChat} />
         </Stack.Navigator>
     );
 };

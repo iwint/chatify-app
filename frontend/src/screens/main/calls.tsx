@@ -52,7 +52,11 @@ const Calls: React.FC<CallsProps> = ({}) => {
                     color={theme.colors.primary}
                 />
             </TouchableOpacity>
-        )
+        ),
+        searchOptions: {
+            placeholder: 'Search'
+        },
+        headerLargeTitle: true
     };
 
     useEffect(() => {
