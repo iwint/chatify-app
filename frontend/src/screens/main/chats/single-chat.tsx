@@ -5,9 +5,28 @@ import { useTheme } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ThemeProps } from '@utils/theme';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { GiftedChat, IMessage } from 'react-native-gifted-chat';
+import {
+    Image,
+    ImageBackground,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native';
+import {
+    GiftedChat,
+    IMessage,
+    Bubble,
+    SystemMessage,
+    Day,
+    Send,
+    InputToolbar,
+    Actions
+} from 'react-native-gifted-chat';
 import Icon from 'react-native-vector-icons/Ionicons';
+import messageData from '@assets/data/messages.json';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { defaultStyles } from '@constants/styles';
 
 interface SingleChatProps extends NativeStackScreenProps<any> {}
 
@@ -19,62 +38,28 @@ const SingleChat: React.FC<SingleChatProps> = (props) => {
     const { from, img } = props.route.params?.data as Chat;
 
     const [messages, setMessages] = useState<IMessage[]>([]);
+    const [text, setText] = useState('');
 
     useEffect(() => {
         setMessages([
-            {
-                _id: 1,
-                text: 'This is a quick reply. Do you love Gifted Chat? (radio) KEEP IT',
-                createdAt: new Date(),
-                quickReplies: {
-                    type: 'radio', // or 'checkbox',
-                    keepIt: true,
-                    values: [
-                        {
-                            title: '😋 Yes',
-                            value: 'yes'
-                        },
-                        {
-                            title: '📷 Yes, let me show you with a picture!',
-                            value: 'yes_picture'
-                        },
-                        {
-                            title: '😞 Nope. What?',
-                            value: 'no'
-                        }
-                    ]
-                },
+            ...messageData.map((message) => ({
+                _id: message.id,
+                text: message.msg,
+                createdAt: new Date(message.date),
                 user: {
-                    _id: 2,
-                    name: 'React Native',
+                    _id: message.from,
+                    name: from,
                     avatar: img
                 }
-            },
+            })),
             {
-                _id: 2,
-                text: 'This is a quick reply. Do you love Gifted Chat? (checkbox)',
+                _id: 0,
+                system: true,
+                text: 'Chats are encrypted',
                 createdAt: new Date(),
-                quickReplies: {
-                    type: 'checkbox', // or 'radio',
-                    values: [
-                        {
-                            title: 'Yes',
-                            value: 'yes'
-                        },
-                        {
-                            title: 'Yes, let me show you with a picture!',
-                            value: 'yes_picture'
-                        },
-                        {
-                            title: 'Nope. What?',
-                            value: 'no'
-                        }
-                    ]
-                },
                 user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: img
+                    _id: 0,
+                    name: 'Bot'
                 }
             }
         ]);
@@ -115,16 +100,136 @@ const SingleChat: React.FC<SingleChatProps> = (props) => {
         );
     }, []);
 
+    const inset = useSafeAreaInsets();
+
     return (
-        <MainLayout headerOptions={headerOptions}>
-            <GiftedChat
-                messages={messages}
-                onSend={(messages: any) => onSend(messages)}
-                user={{
-                    _id: 1,
-                    avatar: img
+        <MainLayout
+            layoutOptions={{ scrollDisabled: true }}
+            headerOptions={headerOptions}
+        >
+            <ImageBackground
+                resizeMode="cover"
+                resizeMethod="auto"
+                style={{ flex: 1 }}
+                source={{
+                    uri: img
                 }}
-            />
+                blurRadius={2}
+                imageStyle={{
+                    opacity: 0.5
+                }}
+            >
+                <GiftedChat
+                    text={text}
+                    onInputTextChanged={setText}
+                    messages={messages}
+                    onSend={(messages: any) => onSend(messages)}
+                    renderAvatarOnTop
+                    showAvatarForEveryMessage
+                    user={{
+                        _id: 1,
+                        name: 'Iwin'
+                    }}
+                    renderSystemMessage={(props) => (
+                        <SystemMessage
+                            {...props}
+                            textStyle={{
+                                color: theme.colors.primary
+                            }}
+                        />
+                    )}
+                    renderDay={(props) => (
+                        <Day
+                            {...props}
+                            textStyle={{
+                                color: theme.dark
+                                    ? theme.colors.lightGray
+                                    : theme.colors.gray
+                            }}
+                        />
+                    )}
+                    timeTextStyle={{
+                        right: {
+                            color: theme.colors.gray
+                        }
+                    }}
+                    bottomOffset={inset.bottom}
+                    maxComposerHeight={100}
+                    renderBubble={(props) => (
+                        <Bubble
+                            {...props}
+                            textStyle={{
+                                right: {
+                                    color: theme.colors.black
+                                }
+                            }}
+                            wrapperStyle={{
+                                right: {
+                                    backgroundColor: theme.colors.lightGreen
+                                }
+                            }}
+                        />
+                    )}
+                    textInputProps={styles.input}
+                    renderInputToolbar={(props) => (
+                        <InputToolbar
+                            {...props}
+                            containerStyle={{
+                                backgroundColor: theme.colors.background,
+                                paddingVertical: 5
+                            }}
+                            renderActions={(props) => (
+                                <Actions
+                                    {...props}
+                                    icon={() => (
+                                        <Icon
+                                            name="add"
+                                            size={24}
+                                            color={theme.colors.primary}
+                                        />
+                                    )}
+                                />
+                            )}
+                        />
+                    )}
+                    renderSend={(props) => (
+                        <View style={styles.sendButtonWrapper}>
+                            {text.length > 0 && (
+                                <Send
+                                    {...props}
+                                    sendButtonProps={{
+                                        style: styles.sendButton
+                                    }}
+                                >
+                                    <Icon
+                                        name="send"
+                                        size={24}
+                                        color={theme.colors.primary}
+                                    />
+                                </Send>
+                            )}
+                            {text.length === 0 && (
+                                <>
+                                    <TouchableOpacity>
+                                        <Icon
+                                            name="camera-outline"
+                                            size={28}
+                                            color={theme.colors.primary}
+                                        />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity>
+                                        <Icon
+                                            name="mic-outline"
+                                            size={28}
+                                            color={theme.colors.primary}
+                                        />
+                                    </TouchableOpacity>
+                                </>
+                            )}
+                        </View>
+                    )}
+                />
+            </ImageBackground>
         </MainLayout>
     );
 };
@@ -158,5 +263,28 @@ const makeStyles = (theme: ThemeProps) =>
             flexDirection: 'row',
             alignItems: 'center',
             gap: theme.getResponsive(30, 'width')
+        },
+        sendButton: {
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        sendButtonWrapper: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            paddingHorizontal: theme.getResponsive(10, 'width'),
+            gap: theme.getResponsive(15, 'width')
+        },
+        input: {
+            backgroundColor: theme.dark
+                ? theme.colors.gray
+                : theme.colors.white,
+            height: '90%',
+            borderRadius: 8,
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+            color: theme.colors.text
         }
     });

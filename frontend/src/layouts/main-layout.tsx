@@ -32,7 +32,8 @@ interface MainLayoutProps {
     children: React.ReactNode;
     headerOptions?: HeaderOptions;
     layoutOptions?: {
-        backgroundColor: string;
+        backgroundColor?: string;
+        scrollDisabled?: boolean;
     };
 }
 
@@ -132,7 +133,15 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 scrollEventThrottle={16}
                 onScroll={scrollHandler}
             >
-                <View style={{ minHeight: theme.dimension.height, gap: 20 }}>
+                <View
+                    style={{
+                        minHeight: layoutOptions?.scrollDisabled
+                            ? theme.dimension.height - 100
+                            : theme.dimension.height,
+                        gap: 20,
+                        flex: 1
+                    }}
+                >
                     {children}
                 </View>
             </AnimatedScrollView>
