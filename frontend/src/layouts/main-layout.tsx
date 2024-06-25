@@ -1,7 +1,7 @@
 import AnimatedHeader from '@components/common/animated-header';
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import {
     ScrollView,
     StyleSheet,
@@ -15,7 +15,6 @@ import Animated, {
     useSharedValue
 } from 'react-native-reanimated';
 import SafeAreaView from 'react-native-safe-area-view';
-import { ScreenContainerProps } from 'react-native-screens';
 
 export interface SearchOptions extends TextInputProps {}
 
@@ -47,27 +46,18 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     //@ts-ignore
     const theme: ThemeProps = useTheme();
     const scrollViewRef = useRef(null);
+
     const headerFontSize = useSharedValue<number>(26);
     const headerHeight = useSharedValue<number>(100);
     const headerSearchDisplay = useSharedValue<string>('none');
     const headerTextAlign = useSharedValue<string>('left');
     const scrollOffset = useSharedValue(0);
-    const derivedHeaderFontSize = useDerivedValue(
-        () => headerFontSize.value,
-        [headerFontSize.value]
-    );
 
-    const derivedHeaderTextAlign = useDerivedValue(
-        () => headerTextAlign.value,
-        [headerFontSize.value]
-    );
-    const derivedHeaderHeight = useDerivedValue(
-        () => headerHeight.value,
-        [headerHeight.value]
-    );
+    const derivedHeaderFontSize = useDerivedValue(() => headerFontSize.value);
+    const derivedHeaderTextAlign = useDerivedValue(() => headerTextAlign.value);
+    const derivedHeaderHeight = useDerivedValue(() => headerHeight.value);
     const derivedHeaderSearchDisplay = useDerivedValue(
-        () => headerSearchDisplay.value,
-        [headerSearchDisplay.value]
+        () => headerSearchDisplay.value
     );
 
     const scrollHandler = useAnimatedScrollHandler({
@@ -75,8 +65,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({
             const scrollY = event.contentOffset.y;
             const animatedStartOffset = 20;
             const animatedEndOffset = 70;
+
             scrollOffset.value = 26;
-            console.log(scrollY);
 
             if (scrollY > animatedStartOffset && scrollY < animatedEndOffset) {
                 headerHeight.value = 100;
@@ -85,6 +75,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 headerHeight.value = 70;
                 headerFontSize.value = 18;
                 headerTextAlign.value = 'center';
+                headerSearchDisplay.value = 'none';
             } else {
                 headerFontSize.value = 26;
                 headerSearchDisplay.value = 'flex';
@@ -93,7 +84,19 @@ const MainLayout: React.FC<MainLayoutProps> = ({
             }
         }
     });
-    const styles = makeStyles(theme);
+
+    const styles = useMemo(() => makeStyles(theme), [theme]);
+
+    const dynamicChildrenContainerStyle = useMemo(
+        () => ({
+            minHeight: layoutOptions?.scrollDisabled
+                ? theme.dimension.height - 100
+                : theme.dimension.height,
+            gap: 20,
+            flex: 1
+        }),
+        [layoutOptions?.scrollDisabled, theme.dimension.height]
+    );
 
     return (
         <SafeAreaView
@@ -101,9 +104,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({
             style={[
                 styles.container,
                 {
-                    backgroundColor: layoutOptions?.backgroundColor
-                        ? layoutOptions.backgroundColor
-                        : theme.colors.background
+                    backgroundColor:
+                        layoutOptions?.backgroundColor ||
+                        theme.colors.background
                 }
             ]}
         >
@@ -124,7 +127,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
             <AnimatedScrollView
                 contentInsetAdjustmentBehavior={'automatic'}
                 ref={scrollViewRef}
-                style={{ flex: 1 }}
+                style={styles.scrollView}
                 contentContainerStyle={[
                     styles.contentContainer,
                     { paddingTop: headerOptions?.headerLargeTitle ? 40 : 0 }
@@ -133,23 +136,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 scrollEventThrottle={16}
                 onScroll={scrollHandler}
             >
-                <View
-                    style={{
-                        minHeight: layoutOptions?.scrollDisabled
-                            ? theme.dimension.height - 100
-                            : theme.dimension.height,
-                        gap: 20,
-                        flex: 1
-                    }}
-                >
-                    {children}
-                </View>
+                <View style={dynamicChildrenContainerStyle}>{children}</View>
             </AnimatedScrollView>
         </SafeAreaView>
     );
 };
-
-export default MainLayout;
 
 const makeStyles = (theme: ThemeProps) =>
     StyleSheet.create({
@@ -157,8 +148,13 @@ const makeStyles = (theme: ThemeProps) =>
             flex: 1,
             height: '100%'
         },
+        scrollView: {
+            flex: 1
+        },
         contentContainer: {
             paddingBottom: 15,
             paddingHorizontal: 5
         }
     });
+
+export default MainLayout;

@@ -1,3 +1,4 @@
+import messageData from '@assets/data/messages.json';
 import { useHideBottomBar } from '@hooks/use-hide-bottom-tab';
 import MainLayout, { HeaderOptions } from '@layouts/main-layout';
 import { Chat } from '@models/chats';
@@ -14,19 +15,17 @@ import {
     View
 } from 'react-native';
 import {
+    Actions,
+    Bubble,
+    Day,
     GiftedChat,
     IMessage,
-    Bubble,
-    SystemMessage,
-    Day,
-    Send,
     InputToolbar,
-    Actions
+    Send,
+    SystemMessage
 } from 'react-native-gifted-chat';
-import Icon from 'react-native-vector-icons/Ionicons';
-import messageData from '@assets/data/messages.json';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { defaultStyles } from '@constants/styles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 interface SingleChatProps extends NativeStackScreenProps<any> {}
 
