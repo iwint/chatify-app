@@ -65,7 +65,7 @@ export default class Swipeable extends Component<SwipeableProps> {
     ) => (
         <View
             style={{
-                width: 200,
+                width: 192,
                 flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row'
             }}
         >

@@ -39,14 +39,14 @@ const ChatsCard: React.FC<ChatsCardProps> = ({
             color: '#C8C7CD',
             onPressAction: () => {},
             title: 'More',
-            width: 100,
+            width: 200,
             icon: 'ellipsis-horizontal-outline'
         },
         {
             color: theme.colors.muted,
             onPressAction: () => {},
             title: 'Archive',
-            width: 100,
+            width: 200,
             icon: 'archive'
         }
     ];

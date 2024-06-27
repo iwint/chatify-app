@@ -69,13 +69,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({
             scrollOffset.value = 26;
 
             if (scrollY > animatedStartOffset && scrollY < animatedEndOffset) {
+                headerSearchDisplay.value = 'none';
                 headerHeight.value = 100;
-                headerSearchDisplay.value = 'none';
             } else if (scrollY > animatedEndOffset) {
-                headerHeight.value = 70;
-                headerFontSize.value = 18;
-                headerTextAlign.value = 'center';
                 headerSearchDisplay.value = 'none';
+                headerFontSize.value = 18;
+                headerHeight.value = 70;
+                headerTextAlign.value = 'center';
             } else {
                 headerFontSize.value = 26;
                 headerSearchDisplay.value = 'flex';
