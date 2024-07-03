@@ -9,6 +9,7 @@ import {
     ViewStyle
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 type ButtonSize = 'small' | 'medium' | 'large' | 'full';
 
@@ -17,6 +18,7 @@ interface ButtonProps extends RNButtonProps {
     textColor?: string;
     backgroundColor?: string;
     title: string;
+    icon?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -24,6 +26,7 @@ const Button: React.FC<ButtonProps> = ({
     textColor,
     backgroundColor,
     title,
+    icon,
     ...props
 }) => {
     const theme = useTheme();
@@ -71,7 +74,7 @@ const Button: React.FC<ButtonProps> = ({
 
     const getColor = () => {
         return {
-            color: textColor ? textColor : theme.colors.text,
+            color: textColor ? textColor : '#fff',
             backgroundColor: backgroundColor
                 ? backgroundColor
                 : theme.colors.primary
@@ -80,7 +83,7 @@ const Button: React.FC<ButtonProps> = ({
 
     return (
         <TouchableOpacity
-            onPress={() => props.onPress}
+            onPress={props.onPress as any}
             disabled={props.disabled}
             style={[
                 styles.container,
@@ -90,6 +93,7 @@ const Button: React.FC<ButtonProps> = ({
                 { opacity: props.disabled ? 0.7 : 1 }
             ]}
         >
+            {icon && <Icon size={24} color={'#fff'} name={icon} />}
             <Text
                 style={[
                     styles.text,

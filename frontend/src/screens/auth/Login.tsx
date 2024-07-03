@@ -1,5 +1,6 @@
 import Button from '@components/buttons/button';
 import AuthLayout from '@layouts/auth-layout';
+import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import {
     StackActions,
     useNavigation,
@@ -14,6 +15,7 @@ import {
     Text,
     View
 } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 import MaskInput from 'react-native-mask-input';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -47,7 +49,7 @@ const Login: React.FC<LoginProps> = ({}) => {
     const handleNavigation = () => {
         navigation.dispatch(StackActions.push('OTP', { phone: phone }));
     };
-    const keyboardOffset = Platform.OS === 'ios' ? 'padding' : 'height';
+    const keyboardOffset = Platform.OS === 'ios' ? 'padding' : 'padding';
     return (
         <AuthLayout>
             <KeyboardAvoidingView
@@ -55,8 +57,8 @@ const Login: React.FC<LoginProps> = ({}) => {
                 style={{ flex: 1, justifyContent: 'flex-end' }}
             >
                 <View style={styles.container}>
-                    <View style={{ width: '100%' }}>
-                        <MaskInput
+                    <View style={{ width: '100%', gap: 10 }}>
+                        {/* <MaskInput
                             style={styles.maskInput}
                             value={phone}
                             autoFocus
@@ -66,20 +68,28 @@ const Login: React.FC<LoginProps> = ({}) => {
                                 setPhone(unmasked);
                             }}
                             mask={MASK}
-                        />
+                        /> */}
                     </View>
                     <Text style={styles.description}>
                         Chatify will need to verify your account. Carrier
                         charges may apply.
                     </Text>
                     <View style={{ flex: 1 }} />
-                    <Button
-                        style={{ marginBottom: bottom }}
-                        size="full"
-                        disabled={phone === ''}
-                        title="Continue"
-                        onPress={handleNavigation}
-                    />
+                    <View style={{ width: '100%' }}>
+                        <GoogleSigninButton
+                            size={GoogleSigninButton.Size.Wide}
+                            style={{
+                                width: '100%',
+                                borderRadius: 10,
+                                minHeight: 50
+                            }}
+                            role="button"
+                            color={GoogleSigninButton.Color.Dark}
+                            onPress={() => {
+                                // initiate sign in
+                            }}
+                        />
+                    </View>
                 </View>
             </KeyboardAvoidingView>
         </AuthLayout>
@@ -92,7 +102,8 @@ const makeStyles = (theme: ThemeProps) =>
             gap: 20,
             alignItems: 'center',
             justifyContent: 'flex-end',
-            height: '80%'
+            height: '80%',
+            flex: 1
         },
         description: {
             color: theme.colors.text
