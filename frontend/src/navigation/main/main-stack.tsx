@@ -43,11 +43,11 @@ const MainStack = () => {
                         backgroundColor: theme.colors.background,
                         borderTopWidth: 0,
                         height: 60,
-                        paddingBottom: 10
+                        paddingBottom: 10,
                     },
                     headerStyle: {
-                        backgroundColor: theme.colors.background
-                    }
+                        backgroundColor: theme.colors.background,
+                    },
                 }}
             >
                 {TABS.map((tab, index) => (
@@ -64,8 +64,8 @@ const MainStack = () => {
                                     focused: props.focused,
                                     name: tab.icon,
                                     size: props.size,
-                                    material: tab.material
-                                })
+                                    material: tab.material,
+                                }),
                         }}
                     />
                 ))}

@@ -4,7 +4,7 @@ import AuthLayout from '@layouts/auth-layout';
 import {
     useNavigation,
     useTheme,
-    StackActions
+    StackActions,
 } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React, { useCallback } from 'react';
@@ -34,7 +34,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({}) => {
             <Button
                 size="full"
                 style={{
-                    marginBottom: bottom
+                    marginBottom: bottom,
                 }}
                 onPress={handleNavigation}
                 title="Get Started"
@@ -51,26 +51,26 @@ const makeStyles = (theme: ThemeProps) =>
             flex: 1,
             padding: 20,
             alignItems: 'center',
-            marginTop: theme.getResponsive(100, 'height')
+            marginTop: theme.getResponsive(100, 'height'),
         },
         welcome: {
             resizeMode: 'contain',
             width: '100%',
             height: 300,
-            marginBottom: theme.getResponsive(30, 'height')
+            marginBottom: theme.getResponsive(30, 'height'),
         },
         heading: {
             fontSize: 24,
             fontWeight: 'bold',
             marginVertical: 20,
             color: theme.colors.text,
-            textAlign: 'center'
+            textAlign: 'center',
         },
         description: {
             color: theme.colors.text,
-            textAlign: 'center'
+            textAlign: 'center',
         },
         link: {
-            color: Colors.gray
-        }
+            color: Colors.gray,
+        },
     });

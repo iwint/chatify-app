@@ -1,13 +1,8 @@
 import Button from '@components/buttons/button';
-import {
-    ParamListBase,
-    StackActions,
-    useNavigation,
-    useTheme
-} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import {
     StackNavigationOptions,
-    StackScreenProps
+    StackScreenProps,
 } from '@react-navigation/stack';
 import { ThemeProps } from '@utils/theme';
 import React, { useEffect, useState } from 'react';
@@ -16,10 +11,9 @@ import {
     CodeField,
     Cursor,
     useBlurOnFulfill,
-    useClearByFocusCell
+    useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack/types';
 
 const CELL_COUNT = 6;
 
@@ -32,8 +26,8 @@ const HEADER_OPTIONS: StackNavigationOptions = {
     headerShadowVisible: false,
     headerStatusBarHeight: 10,
     headerTitleStyle: {
-        fontSize: 18
-    }
+        fontSize: 18,
+    },
 };
 
 const OTP: React.FC<OTPProps> = (props) => {
@@ -45,15 +39,15 @@ const OTP: React.FC<OTPProps> = (props) => {
     const ref = useBlurOnFulfill({ value: code, cellCount: CELL_COUNT });
     const [codeProps, getCellOnLayoutHandler] = useClearByFocusCell({
         value: code,
-        setValue: setCode
+        setValue: setCode,
     });
 
     useEffect(() => {
         props.navigation.setOptions({
             ...HEADER_OPTIONS,
             headerStyle: {
-                backgroundColor: theme.colors.background
-            }
+                backgroundColor: theme.colors.background,
+            },
         });
     }, [props.navigation]);
 
@@ -115,27 +109,27 @@ const makeStyles = (theme: ThemeProps) =>
             alignItems: 'center',
             padding: 20,
             backgroundColor: theme.colors.background,
-            gap: 20
+            gap: 20,
         },
         legal: {
             fontSize: 14,
             textAlign: 'center',
-            color: theme.colors.text
+            color: theme.colors.text,
         },
         button: {
             width: '100%',
-            alignItems: 'center'
+            alignItems: 'center',
         },
         buttonText: {
             color: theme.colors.primary,
-            fontSize: 18
+            fontSize: 18,
         },
         codeFieldRoot: {
             marginTop: 20,
             width: 260,
             marginLeft: 'auto',
             marginRight: 'auto',
-            gap: 4
+            gap: 4,
         },
         cellRoot: {
             width: 40,
@@ -143,16 +137,16 @@ const makeStyles = (theme: ThemeProps) =>
             justifyContent: 'center',
             alignItems: 'center',
             borderBottomColor: '#ccc',
-            borderBottomWidth: 1
+            borderBottomWidth: 1,
         },
         cellText: {
             color: theme.colors.text,
             fontSize: 18,
-            textAlign: 'center'
+            textAlign: 'center',
         },
         focusCell: {
             paddingBottom: 4,
             borderBottomColor: theme.colors.primary,
-            borderBottomWidth: 2
-        }
+            borderBottomWidth: 2,
+        },
     });
