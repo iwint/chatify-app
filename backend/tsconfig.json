@@ -1,14 +1,14 @@
 {
-  "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "es6",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "rootDir": "./src"
-  },
-  "lib": ["es2015"]
+    "compilerOptions": {
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "module": "Preserve",
+        "esModuleInterop": true,
+        "target": "es2017",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "outDir": "./dist",
+        "rootDir": "./src"
+    },
+    "lib": ["es2015"]
 }

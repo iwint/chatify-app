@@ -1,7 +1,7 @@
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React, { useState } from 'react';
-import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface AuthLayoutProps {

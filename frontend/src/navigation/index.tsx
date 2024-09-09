@@ -1,4 +1,4 @@
-import { NavigationContainer, useTheme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { getTheme } from '@utils/theme';
 import { StatusBar, useColorScheme } from 'react-native';

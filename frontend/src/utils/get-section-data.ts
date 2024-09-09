@@ -10,89 +10,106 @@ interface IEntry {
 }
 
 interface ILetterMap {
-    [key: string]: number
+    [key: string]: number;
 }
 
-export const getSectionData = (data: IData[], charIndex: string[], uncategorizedAtTop = false) => {
-    const validLettersMap = getValidLettersMap(charIndex)
-    const alphabetEntrySet: [string, IData[]][] = getAlphabetEntrySet(data, validLettersMap);
+export const getSectionData = (
+    data: IData[],
+    charIndex: string[],
+    uncategorizedAtTop = false
+) => {
+    const validLettersMap = getValidLettersMap(charIndex);
+    const alphabetEntrySet: [string, IData[]][] = getAlphabetEntrySet(
+        data,
+        validLettersMap
+    );
 
     return alphabetEntrySet
         .map(formatEntry)
-        .sort((a, b) => sortSectionsByCharIndex(a, b, validLettersMap, uncategorizedAtTop))
+        .sort((a, b) =>
+            sortSectionsByCharIndex(a, b, validLettersMap, uncategorizedAtTop)
+        )
         .map((section: ISectionData, index: number) => ({ ...section, index }));
 };
 
 const getValidLettersMap = (letterMap: string[]) => {
-    const map: ILetterMap = {}
+    const map: ILetterMap = {};
 
     letterMap.forEach((letter, i) => {
-        map[letter.toLowerCase()] = i + 1
-    })
-
-    return map
-}
-
-const getAlphabetEntrySet = (data: IData[], validLettersMap: ILetterMap) => {
-    const alphabetSet: IAlphabetSet = {}
-
-    data.forEach((item) => {
-        const letter = getItemFirstLetter(item.value, validLettersMap)
-
-        if (!letter) return
-
-        if (!alphabetSet[letter]) {
-            alphabetSet[letter] = []
-        }
-
-        alphabetSet[letter].push(item)
+        map[letter.toLowerCase()] = i + 1;
     });
 
-    return Object.entries(alphabetSet)
+    return map;
+};
+
+const getAlphabetEntrySet = (data: IData[], validLettersMap: ILetterMap) => {
+    const alphabetSet: IAlphabetSet = {};
+
+    data.forEach((item) => {
+        const letter = getItemFirstLetter(item.value, validLettersMap);
+
+        if (!letter) return;
+
+        if (!alphabetSet[letter]) {
+            alphabetSet[letter] = [];
+        }
+
+        alphabetSet[letter].push(item);
+    });
+
+    return Object.entries(alphabetSet);
 };
 
 const getItemFirstLetter = (value: string, validLettersMap: ILetterMap) => {
-    const firstChar = value.substring(0, 1)
-    const isValidLetter = validLettersMap[firstChar.toLowerCase()]
+    const firstChar = value.substring(0, 1);
+    const isValidLetter = validLettersMap[firstChar.toLowerCase()];
 
     if (isValidLetter) {
-        return firstChar.toUpperCase()
+        return firstChar.toUpperCase();
     }
 
-    return "#"
+    return "#";
 };
 
 const formatEntry = (entry: [string, any[]]) => {
     const [title, unsortedData] = entry;
-    const data = unsortedData.sort((a, b) => alphabeticComparison(a.value, b.value));
+    const data = unsortedData.sort((a, b) =>
+        alphabeticComparison(a.value, b.value)
+    );
 
     return { title, data } as IEntry;
 };
 
-const isLetterHash = (charOne: string, charTwo: string) => charOne !== "#" && charTwo === "#";
+const isLetterHash = (charOne: string, charTwo: string) =>
+    charOne !== "#" && charTwo === "#";
 
-const sortSectionsByCharIndex = (a: IEntry, b: IEntry, validLettersMap: ILetterMap, uncategorizedAtTop: boolean) => {
-    const charA = a.title.toLowerCase()
-    const charB = b.title.toLowerCase()
+const sortSectionsByCharIndex = (
+    a: IEntry,
+    b: IEntry,
+    validLettersMap: ILetterMap,
+    uncategorizedAtTop: boolean
+) => {
+    const charA = a.title.toLowerCase();
+    const charB = b.title.toLowerCase();
 
-    const isBHash = isLetterHash(charA, charB)
+    const isBHash = isLetterHash(charA, charB);
     if (isBHash) return uncategorizedAtTop ? 1 : -1;
 
-    const isAHash = isLetterHash(charB, charA)
+    const isAHash = isLetterHash(charB, charA);
     if (isAHash) return uncategorizedAtTop ? -1 : 1;
 
-    const charAPosition = validLettersMap[charA]
-    const charBPosition = validLettersMap[charB]
-    return charAPosition - charBPosition
+    const charAPosition = validLettersMap[charA];
+    const charBPosition = validLettersMap[charB];
+    return charAPosition - charBPosition;
 };
 
 const alphabeticComparison = (a: string, b: string) => {
-    const aCap = a.toUpperCase()
-    const bCap = b.toUpperCase()
+    const aCap = a.toUpperCase();
+    const bCap = b.toUpperCase();
 
-    if (aCap < bCap) return -1
+    if (aCap < bCap) return -1;
 
-    if (aCap > bCap) return 1
+    if (aCap > bCap) return 1;
 
-    return 0
+    return 0;
 };
