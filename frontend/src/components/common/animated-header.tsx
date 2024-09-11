@@ -1,11 +1,11 @@
-import SearchInput from '@components/inputs/search';
+import Input from '@components/inputs';
 import { HeaderOptions } from '@layouts/main-layout';
 import { useNavigation, useRoute, useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Animated, {
     useAnimatedStyle,
-    withTiming
+    withTiming,
 } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -20,7 +20,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
     headerRight,
     headerStyle,
     searchOptions,
-    headerLargeTitle
+    headerLargeTitle,
 }) => {
     //@ts-ignore
     const theme: ThemeProps = useTheme();
@@ -36,27 +36,27 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
         return {
             fontSize: headerLargeTitle
                 ? withTiming(derivedValues?.fontSize.value || 14)
-                : 18
+                : 18,
         };
     });
     const animatedHeaderHeight = useAnimatedStyle(() => ({
         height: headerLargeTitle ? withTiming(derivedValues.height.value) : 80,
-        alignItems: derivedValues.textAlign.value
+        alignItems: derivedValues.textAlign.value,
     }));
 
     const animatedLargeHeaderTitle = useAnimatedStyle(() => ({
-        display: derivedValues.textAlign.value === 'center' ? 'none' : 'flex'
+        display: derivedValues.textAlign.value === 'center' ? 'none' : 'flex',
     }));
     const animatedSmallTitle = useAnimatedStyle(() => ({
         display: headerLargeTitle
             ? derivedValues.textAlign.value === 'center'
                 ? 'flex'
                 : 'none'
-            : 'flex'
+            : 'flex',
     }));
 
     const animatedHeaderSearchDisplay = useAnimatedStyle(() => ({
-        display: derivedValues.display.value
+        display: derivedValues.display.value,
     }));
 
     const animatedHeaderTitleComponent = useAnimatedStyle(() => {
@@ -65,7 +65,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
                 ? derivedValues.textAlign.value === 'center'
                     ? 'none'
                     : 'flex'
-                : 'flex'
+                : 'flex',
         };
     });
 
@@ -78,8 +78,8 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
                     backgroundColor: headerStyle?.backgroundColor
                         ? headerStyle.backgroundColor
                         : theme.colors.background,
-                    ...headerStyle
-                }
+                    ...headerStyle,
+                },
             ]}
         >
             <Animated.View style={styles.topSectionWrapper}>
@@ -102,7 +102,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
                             style={[
                                 styles.text,
                                 animatedHeaderTextSize,
-                                animatedSmallTitle
+                                animatedSmallTitle,
                             ]}
                         >
                             {headerTitle}
@@ -120,7 +120,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
                                         style={[
                                             styles.text,
                                             animatedHeaderTextSize,
-                                            animatedSmallTitle
+                                            animatedSmallTitle,
                                         ]}
                                     >
                                         {route.name}
@@ -136,7 +136,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
                         style={[
                             styles.text,
                             animatedHeaderTextSize,
-                            animatedSmallTitle
+                            animatedSmallTitle,
                         ]}
                     >
                         {route.name}
@@ -150,15 +150,13 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
                     style={[
                         styles.text,
                         animatedHeaderTextSize,
-                        animatedLargeHeaderTitle
+                        animatedLargeHeaderTitle,
                     ]}
                 >
                     {route.name}
                 </Animated.Text>
             )}
-            {searchOptions && (
-                <SearchInput style={animatedHeaderSearchDisplay} />
-            )}
+            {searchOptions && <Input style={animatedHeaderSearchDisplay} />}
         </Animated.View>
     );
 };
@@ -172,19 +170,19 @@ const makeStyles = (theme: ThemeProps) =>
             zIndex: 10,
             justifyContent: 'center',
             padding: 20,
-            gap: 10
+            gap: 10,
         },
 
         text: {
             color: theme.colors.text,
-            fontFamily: 'bold'
+            fontFamily: 'bold',
         },
         topSectionWrapper: {
             flexDirection: 'row',
             alignItems: 'center',
             width: '100%',
-            justifyContent: 'space-between'
-        }
+            justifyContent: 'space-between',
+        },
     });
 
 export default AnimatedHeader;

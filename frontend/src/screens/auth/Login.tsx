@@ -1,10 +1,5 @@
-import { GOOGLE_CLIENT_ID } from '@constants/definitions';
+import Button from '@components/buttons/button';
 import AuthLayout from '@layouts/auth-layout';
-import {
-    GoogleSigninButton,
-    GoogleSignin,
-    statusCodes,
-} from '@react-native-google-signin/google-signin';
 import {
     StackActions,
     useNavigation,
@@ -17,35 +12,14 @@ import {
     Platform,
     StyleSheet,
     Text,
-    ToastAndroid,
     View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { getFormData } from './helper';
+import Input from '@components/inputs';
+import { AuthStatus } from './auth.types';
 
 interface LoginProps {}
-
-const MASK = [
-    '+',
-    /\d/,
-    /\d/,
-    ' ',
-    /\d/,
-    /\d/,
-    /\d/,
-    /\d/,
-    /\d/,
-    ' ',
-    /\d/,
-    /\d/,
-    /\d/,
-    /\d/,
-    /\d/,
-];
-
-GoogleSignin.configure({
-    offlineAccess: true,
-    webClientId: GOOGLE_CLIENT_ID,
-});
 
 const Login: React.FC<LoginProps> = ({}) => {
     // @ts-ignore
@@ -54,35 +28,13 @@ const Login: React.FC<LoginProps> = ({}) => {
     const navigation = useNavigation();
     const { bottom } = useSafeAreaInsets();
     const [phone, setPhone] = useState('');
+    const status: AuthStatus = 'register';
     const handleNavigation = () => {
         navigation.dispatch(StackActions.push('OTP', { phone: phone }));
     };
-
-    const getGoodleAuthDetails = () => {
-        return new Promise(async (resolve, reject) => {
-            await GoogleSignin.signIn()
-                .then((res) => {
-                    handleNavigation();
-                    resolve(res.user);
-                })
-                .catch((err) => {
-                    if (Object.values(statusCodes).includes(err.code)) {
-                        ToastAndroid.show(
-                            'Something went wrong',
-                            ToastAndroid.SHORT
-                        );
-                        reject(err);
-                    }
-                });
-        });
-    };
-
-    const authenticateUser = async () => {
-        const response = await getGoodleAuthDetails();
-        console.log('USER', response);
-    };
-
+    const authenticateUser = async () => {};
     const keyboardOffset = Platform.OS === 'ios' ? 'padding' : 'padding';
+    const formData = getFormData(status);
     return (
         <AuthLayout>
             <KeyboardAvoidingView
@@ -91,17 +43,16 @@ const Login: React.FC<LoginProps> = ({}) => {
             >
                 <View style={styles.container}>
                     <View style={{ width: '100%', gap: 10 }}>
-                        {/* <MaskInput
-                            style={styles.maskInput}
-                            value={phone}
-                            autoFocus
-                            keyboardType="numeric"
-                            placeholder="+91 your phone number"
-                            onChangeText={(masked, unmasked) => {
-                                setPhone(unmasked);
-                            }}
-                            mask={MASK}
-                        /> */}
+                        {formData.map((input, index) => (
+                            <Input
+                                key={index}
+                                icon={input.icon}
+                                style={styles.input}
+                                secureTextEntry={input.secureTextEntry}
+                                placeholder={input.placeholder}
+                                inputMode={input.inputMode}
+                            />
+                        ))}
                     </View>
                     <Text style={styles.description}>
                         Chatify will need to verify your account. Carrier
@@ -109,12 +60,13 @@ const Login: React.FC<LoginProps> = ({}) => {
                     </Text>
                     <View style={{ flex: 1 }} />
                     <View style={{ width: '100%' }}>
-                        <GoogleSigninButton
-                            size={GoogleSigninButton.Size.Wide}
-                            style={styles.googleButton}
-                            role="button"
-                            color={GoogleSigninButton.Color.Dark}
-                            onPress={authenticateUser}
+                        <Button
+                            size="full"
+                            style={{
+                                marginBottom: bottom,
+                            }}
+                            onPress={handleNavigation}
+                            title="Get Started"
                         />
                     </View>
                 </View>
@@ -135,12 +87,6 @@ const makeStyles = (theme: ThemeProps) =>
         description: {
             color: theme.colors.text,
         },
-        maskInput: {
-            color: '#000',
-            backgroundColor: theme.colors.lightGray,
-            borderRadius: 10,
-            paddingHorizontal: 15,
-        },
         loading: {
             ...StyleSheet.absoluteFillObject,
             zIndex: 10,
@@ -152,6 +98,9 @@ const makeStyles = (theme: ThemeProps) =>
             width: '100%',
             borderRadius: 10,
             minHeight: 50,
+        },
+        input: {
+            height: 50,
         },
     });
 
