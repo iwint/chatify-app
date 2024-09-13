@@ -4,14 +4,14 @@ import authRouter from "./auth.route";
 const router = express();
 
 const routes = [
-	{
-		path: "/auth",
-		route: authRouter,
-	},
+    {
+        path: "/auth",
+        route: authRouter,
+    },
 ];
 
 routes.forEach((route) => {
-	router.use(route.path, route.route);
+    router.use(route.path, route.route);
 });
 
 export default router;

@@ -1,9 +1,8 @@
-import express from 'express'
-import authController from '../controllers/auth.controller'
+import express from "express";
+import authController from "../controllers/auth.controller";
 
+const router = express.Router();
 
-const router = express.Router()
+router.get("/google", authController.authenticateWithGoogle);
 
-router.get('/google', authController.authenticateWithGoogle)
-
-export default router
+export default router;
