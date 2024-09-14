@@ -1,12 +1,45 @@
-import dotenv from "dotenv";
-import ExpressConfig from "./config/express-config";
+import dotenv from 'dotenv';
+import ExpressConfig from './config/express';
+import envConfig from './config/env';
+import mongoose from 'mongoose';
+import logger from './config/logger';
+import { Server } from 'node:http';
 dotenv.config();
 
 const app = ExpressConfig();
-const port = process.env.PORT;
+const port = envConfig.port;
 
-app.get("/", (req, res, next) => {
-    res.send("EXP");
+let server: Server;
+const { url, options } = envConfig.database;
+mongoose.connect(url).then(() => {
+    logger.info('Connected to MongoDB');
+    server = app.listen(port, () => {
+        logger.info(`Listening to http://localhost:${port}`);
+    });
 });
 
-app.listen(port, () => console.log("RUNNIG"));
+const exitHandler = () => {
+    if (server) {
+        server.close(() => {
+            logger.info('Server closed');
+            process.exit(1);
+        });
+    } else {
+        process.exit(1);
+    }
+};
+
+const unexpectedErrorHandler = (error: Error) => {
+    logger.error(error);
+    exitHandler();
+};
+
+process.on('uncaughtException', unexpectedErrorHandler);
+process.on('unhandledRejection', unexpectedErrorHandler);
+
+process.on('SIGTERM', () => {
+    logger.info('SIGTERM received');
+    if (server) {
+        server.close();
+    }
+});
