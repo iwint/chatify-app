@@ -1,4 +1,4 @@
-# Chatify
+# Chatify - Social media application 
 
 Chatify is a mobile chat application built using React Native. The app allows users to send and receive messages in real-time, and includes features such as user authentication, media sharing, and push notifications.
 
