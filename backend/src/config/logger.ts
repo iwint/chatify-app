@@ -1,5 +1,5 @@
-import winston from 'winston';
-import envConfig from './env';
+import winston from "winston";
+import envConfig from "./env";
 
 const enumerateErrorFormat = winston.format((info) => {
     if (info instanceof Error) {
@@ -9,16 +9,16 @@ const enumerateErrorFormat = winston.format((info) => {
 });
 
 const logger = winston.createLogger({
-    level: envConfig.env === 'development' ? 'debug' : 'info',
+    level: envConfig.env === "development" ? "debug" : "info",
     format: winston.format.combine(
         enumerateErrorFormat(),
-        envConfig.env === 'development' ? winston.format.colorize() : winston.format.uncolorize(),
+        envConfig.env === "development" ? winston.format.colorize() : winston.format.uncolorize(),
         winston.format.splat(),
-        winston.format.printf(({ level, message }) => `${level}: ${message}`)
+        winston.format.printf(({ level, message }) => `${level}: ${JSON.stringify(message, null, 2)}`)
     ),
     transports: [
         new winston.transports.Console({
-            stderrLevels: ['error'],
+            stderrLevels: ["error"],
         }),
     ],
 });
