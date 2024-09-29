@@ -1,10 +1,10 @@
-import httpStatus from "http-status";
 import catchAsync from "../utils/catch-async";
 
-const authenticateWithGoogle = catchAsync(async (req, res) => {
-    res.status(httpStatus.CREATED).send({ message: "Hello" });
-});
+const register = catchAsync(async (req, res) => {});
+
+const login = catchAsync(async (req, res) => {});
 
 export default {
-    authenticateWithGoogle,
+    register,
+    login,
 };
