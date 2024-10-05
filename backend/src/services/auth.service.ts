@@ -11,6 +11,17 @@ const generateAuthToken = async (userId: ObjectId) => {
     });
 };
 
+const sendVerificationEmail = async () => {};
+
+const sendOtp = async (email: string) => {
+    const otp = "";
+};
+
+const verifyOtp = async (email: string) => {
+    const otp = "";
+};
+
 export default {
     generateAuthToken,
+    sendOtp
 };

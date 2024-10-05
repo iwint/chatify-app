@@ -24,6 +24,8 @@
         "joi": "^17.13.3",
         "jsonwebtoken": "^9.0.2",
         "mongoose": "^8.4.4",
+        "nodemailer": "^6.9.15",
+        "otp-generator": "^4.0.1",
         "passport-google-oauth2": "^0.2.0",
         "validator": "^13.12.0",
         "winston": "^3.14.2"
