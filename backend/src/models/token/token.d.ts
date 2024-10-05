@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export interface TokenModelType {
+export type TokenModelType = {
     user: mongoose.Schema.Types.ObjectId;
     token: string;
 }

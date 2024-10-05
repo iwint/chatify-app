@@ -1,7 +1,7 @@
 import mongoose, { ObjectId } from "mongoose";
 import validator from "validator";
-import { UserModelType } from "./user";
 import bcrypt from "bcryptjs";
+import { UserModelStatics, UserModelType } from "./user.model";
 
 const userSchema = new mongoose.Schema<UserModelType>(
     {
@@ -68,7 +68,7 @@ const userSchema = new mongoose.Schema<UserModelType>(
     }
 );
 
-userSchema.statics.isEmailTaken = async function (email: string, excludeUserId: ObjectId) {
+userSchema.statics.isEmailTaken = async function (email: string, excludeUserId: ObjectId): Promise<boolean> {
     const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
     return !!user; //if user is found return true else false
 };
@@ -86,6 +86,6 @@ userSchema.pre("save", async function (next) {
     next();
 });
 
-const User = mongoose.model<UserModelType>("User", userSchema);
+const User = mongoose.model<UserModelType, UserModelStatics>("User", userSchema);
 
 export default User;
