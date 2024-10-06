@@ -7,7 +7,6 @@ const userSchema = new mongoose.Schema<UserModelType>(
     {
         user_id: {
             type: mongoose.Schema.Types.ObjectId,
-            required: true,
             unique: true,
         },
         name: {
@@ -64,7 +63,7 @@ const userSchema = new mongoose.Schema<UserModelType>(
             createdAt: "created_at",
             updatedAt: "updater_at",
         },
-        _id: false,
+        _id: true,
     }
 );
 

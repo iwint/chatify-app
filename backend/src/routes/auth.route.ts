@@ -3,6 +3,6 @@ import authController from "../controllers/auth.controller";
 
 const router = express.Router();
 
-router.get("/register", authController.authenticateWithGoogle);
+router.post("/register", authController.register);
 
 export default router;
