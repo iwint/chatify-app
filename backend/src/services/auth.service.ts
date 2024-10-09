@@ -39,7 +39,7 @@ const sendVerificationEmail = async ({ email, otp }: SendEmailParams) => {
         logger.info("🚀 ~ file: auth.service.ts:33 ~ sendVerificationEmail ~ response:", response);
         return response;
     } catch (err: any) {
-        logger.error("🚀 ~ file: auth.service.ts:42 ~ sendVerificationEmail ~ err:", err)
+        logger.error("🚀 ~ file: auth.service.ts:42 ~ sendVerificationEmail ~ err:", err);
         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, err);
     }
 };
@@ -63,18 +63,22 @@ const saveOtp = async (email: string) => {
         specialChars: false,
         upperCaseAlphabets: false,
     });
+    //TODO: Need to handle the errors
     const response = await OTP.create({
         email: email,
         otp: otp,
     });
+    return response;
 };
 
-const verifyOtp = async (email: string) => {
-    const otp = "";
+const verifyOtp = async ({ email, otp }: SendEmailParams): Promise<boolean> => {
+    const result = await OTP.findOne({ email });
+    return result?.otp === otp;
 };
 
 export default {
     sendVerificationEmail,
     generateAuthToken,
     sendOtp,
+    verifyOtp,
 };
