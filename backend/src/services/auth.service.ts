@@ -1,16 +1,15 @@
 import jwt from "jsonwebtoken";
 import envConfig from "../config/env";
 import { OTP, Token } from "../models";
-import { ObjectId } from "mongoose";
-import { SendEmailParams, User } from "../@types/user";
+import { LoginRequest, SendEmailParams, User } from "../@types/user";
 import nodemailer from "nodemailer";
 import env from "../config/env";
 import ApiError from "../utils/api-error";
 import httpStatus from "http-status";
-import logger from "../config/logger";
 import otpGenerator from "otp-generator";
+import userService from "./user.service";
 
-const generateAuthToken = async (userId: ObjectId) => {
+const generateAuthToken = async (userId: any) => {
     const token = jwt.sign({ sub: userId }, envConfig.jwt.secret);
     return await Token.create({
         token: token,
@@ -19,6 +18,7 @@ const generateAuthToken = async (userId: ObjectId) => {
 };
 
 const sendVerificationEmail = async ({ email, otp }: SendEmailParams) => {
+    //TODO: Need to revamp this email template
     try {
         const subject = "OTP Verfication from RED's Chatify";
         const body = otp;
@@ -36,10 +36,8 @@ const sendVerificationEmail = async ({ email, otp }: SendEmailParams) => {
             subject: subject,
             html: body,
         });
-        logger.info("🚀 ~ file: auth.service.ts:33 ~ sendVerificationEmail ~ response:", response);
         return response;
     } catch (err: any) {
-        logger.error("🚀 ~ file: auth.service.ts:42 ~ sendVerificationEmail ~ err:", err);
         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, err);
     }
 };
@@ -49,7 +47,7 @@ const sendOtp = async (user: User) => {
         throw new ApiError(httpStatus.BAD_REQUEST, "Invalid email");
     }
     const isOTPSent = saveOtp(user.email);
-    if (!isOTPSent) return new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "OTP failed. Please try again");
+    if (!isOTPSent) throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "OTP failed. Please try again");
     return {
         message: `OTP sent to ${user.email}`,
         user: user,
@@ -62,8 +60,7 @@ const saveOtp = async (email: string) => {
         lowerCaseAlphabets: false,
         specialChars: false,
         upperCaseAlphabets: false,
-    });
-    //TODO: Need to handle the errors
+    })
     const response = await OTP.create({
         email: email,
         otp: otp,
@@ -76,7 +73,16 @@ const verifyOtp = async ({ email, otp }: SendEmailParams): Promise<boolean> => {
     return result?.otp === otp;
 };
 
+const loginUserWithEmailAndPassword = async ({ email, password }: LoginRequest) => {
+    const user = await userService.getUserByEmail(email);
+    if (!user || !(await user.isPasswordMatch(password))) {
+        throw new ApiError(httpStatus.UNAUTHORIZED, !user ? "Invalid user" : "Invalid password");
+    }
+    return user
+};
+
 export default {
+    loginUserWithEmailAndPassword,
     sendVerificationEmail,
     generateAuthToken,
     sendOtp,

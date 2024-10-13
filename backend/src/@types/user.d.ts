@@ -21,3 +21,8 @@ export type SendEmailParams = {
     email: string;
     otp: string;
 };
+
+export type LoginRequest = {
+    email: string;
+    password: string;
+};
