@@ -4,7 +4,7 @@ import BottomModal from '@components/modals/bottom-sheet-modal';
 import ListBlock from '@components/sections/list-block';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import MainLayout, { HeaderOptions } from '@layouts/main-layout';
-import { Chat } from '@models/chats';
+import { Chat } from '@types/chats';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ThemeProps } from '@utils/theme';

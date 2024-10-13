@@ -29,7 +29,8 @@ const Button: React.FC<ButtonProps> = ({
     icon,
     ...props
 }) => {
-    const theme = useTheme();
+    // @ts-ignore
+    const theme: ThemeProps = useTheme();
     const styles = makeStyles(theme as unknown as ThemeProps);
 
     const getSize: StyleProp<ViewStyle> | any = () => {
@@ -59,7 +60,7 @@ const Button: React.FC<ButtonProps> = ({
                 return {
                     paddingVertical: 18,
                     paddingHorizontal: 30,
-                    width: '100%',
+                    width: theme.dimension.width - 40,
                     fontSize: 16
                 };
             default:

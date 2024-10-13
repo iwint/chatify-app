@@ -2,7 +2,7 @@ import Swipeable, {
     SwipeableRightActionProps
 } from '@components/common/swipable';
 import { defaultStyles } from '@constants/styles';
-import { Call } from '@models/calls';
+import { Call } from '@types/calls';
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import { format } from 'date-fns';

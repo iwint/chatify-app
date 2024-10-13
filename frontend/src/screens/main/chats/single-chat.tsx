@@ -1,7 +1,7 @@
 import messageData from '@assets/data/messages.json';
 import { useHideBottomBar } from '@hooks/use-hide-bottom-tab';
 import MainLayout, { HeaderOptions } from '@layouts/main-layout';
-import { Chat } from '@models/chats';
+import { Chat } from '@types/chats';
 import { useTheme } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ThemeProps } from '@utils/theme';

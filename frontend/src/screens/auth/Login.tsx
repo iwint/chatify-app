@@ -1,4 +1,3 @@
-import Button from '@components/buttons/button';
 import AuthLayout from '@layouts/auth-layout';
 import {
     StackActions,
@@ -17,7 +16,8 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getFormData } from './helper';
 import Input from '@components/inputs';
-import { AuthStatus } from './auth.types';
+import { AuthStatus } from './auth';
+import Button from '@components/buttons/button';
 
 interface LoginProps {}
 
@@ -27,16 +27,14 @@ const Login: React.FC<LoginProps> = ({}) => {
     const styles = makeStyles(theme);
     const navigation = useNavigation();
     const { bottom } = useSafeAreaInsets();
-    const [phone, setPhone] = useState('');
-    const status: AuthStatus = 'register';
+    const [step, setStep] = useState<AuthStatus>('login');
     const handleNavigation = () => {
-        navigation.dispatch(StackActions.push('OTP', { phone: phone }));
+        navigation.dispatch(StackActions.push('OTP', { phone: '' }));
     };
-    const authenticateUser = async () => {};
     const keyboardOffset = Platform.OS === 'ios' ? 'padding' : 'padding';
-    const formData = getFormData(status);
+    const formData = getFormData(step);
     return (
-        <AuthLayout>
+        <AuthLayout hideImage={step !== 'login'}>
             <KeyboardAvoidingView
                 behavior={keyboardOffset}
                 style={{ flex: 1, justifyContent: 'flex-end' }}
@@ -59,16 +57,14 @@ const Login: React.FC<LoginProps> = ({}) => {
                         charges may apply.
                     </Text>
                     <View style={{ flex: 1 }} />
-                    <View style={{ width: '100%' }}>
-                        <Button
-                            size="full"
-                            style={{
-                                marginBottom: bottom,
-                            }}
-                            onPress={handleNavigation}
-                            title="Get Started"
-                        />
-                    </View>
+                    <Button
+                        size="full"
+                        style={{
+                            marginBottom: bottom,
+                        }}
+                        onPress={handleNavigation}
+                        title="Get Started"
+                    />
                 </View>
             </KeyboardAvoidingView>
         </AuthLayout>

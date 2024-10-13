@@ -3,11 +3,11 @@ import CallsCard from '@components/cards/calls-card';
 import SegementedControl from '@components/common/segmented-control';
 import ListBlock from '@components/sections/list-block';
 import MainLayout, { HeaderOptions } from '@layouts/main-layout';
-import { Call } from '@models/calls';
+import { Call } from '@types/calls';
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Ionicons';
 

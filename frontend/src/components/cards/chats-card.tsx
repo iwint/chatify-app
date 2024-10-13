@@ -1,7 +1,7 @@
 import Swipeable, {
     SwipeableRightActionProps
 } from '@components/common/swipable';
-import { Chat } from '@models/chats';
+import { Chat } from '@types/chats';
 import { useTheme } from '@react-navigation/native';
 import { ThemeProps } from '@utils/theme';
 import { format } from 'date-fns';
